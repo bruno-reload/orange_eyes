@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scene/assets/sphere.tscn" type="PackedScene" id=1]
+[ext_resource path="res://resources/rope/rope_1.tres" type="ArrayMesh" id=2]
+[ext_resource path="res://resources/rope/rope_1.shape" type="Shape" id=3]
+
+[node name="Spatial" type="Spatial"]
+
+[node name="bumps" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.5734, 0 )
+
+[node name="PinJoint2" type="PinJoint" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.35816, 0 )
+nodes/node_a = NodePath("../bumps")
+nodes/node_b = NodePath("../RigidBody")
+
+[node name="RigidBody" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.19209e-06, 0 )
+
+[node name="MeshInstance" type="MeshInstance" parent="RigidBody"]
+mesh = ExtResource( 2 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="RigidBody"]
+shape = ExtResource( 3 )
+
+[node name="PinJoint" type="PinJoint" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.09944e-06, 0 )
+nodes/node_a = NodePath("../RigidBody")
+

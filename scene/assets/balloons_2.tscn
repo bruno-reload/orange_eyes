@@ -1,0 +1,112 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scene/assets/sphere.tscn" type="PackedScene" id=1]
+[ext_resource path="res://resources/rope/rope.mesh" type="ArrayMesh" id=2]
+[ext_resource path="res://resources/rope/rope_trimesh.tres" type="Shape" id=3]
+
+[node name="rope_test" type="Spatial"]
+
+[node name="bumps" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.01332, 0 )
+contacts_reported = 8
+
+[node name="PinJoint" type="PinJoint" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.78796, 0 )
+nodes/node_a = NodePath("../bumps")
+nodes/node_b = NodePath("../RigidBody")
+
+[node name="RigidBody" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.97104, 0 )
+axis_lock_angular_y = true
+
+[node name="MeshInstance" type="MeshInstance" parent="RigidBody"]
+mesh = ExtResource( 2 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="RigidBody"]
+shape = ExtResource( 3 )
+
+[node name="PinJoint2" type="PinJoint" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.99942, 0 )
+nodes/node_a = NodePath("../RigidBody")
+nodes/node_b = NodePath("../RigidBody2")
+
+[node name="RigidBody2" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.18431, 0 )
+axis_lock_angular_y = true
+
+[node name="MeshInstance" type="MeshInstance" parent="RigidBody2"]
+mesh = ExtResource( 2 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="RigidBody2"]
+shape = ExtResource( 3 )
+
+[node name="PinJoint3" type="PinJoint" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2003, 0 )
+nodes/node_a = NodePath("../RigidBody2")
+nodes/node_b = NodePath("../RigidBody3")
+
+[node name="RigidBody3" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.38445, 0 )
+axis_lock_angular_y = true
+
+[node name="MeshInstance" type="MeshInstance" parent="RigidBody3"]
+mesh = ExtResource( 2 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="RigidBody3"]
+shape = ExtResource( 3 )
+
+[node name="PinJoint4" type="PinJoint" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.40037, 0 )
+nodes/node_a = NodePath("../RigidBody3")
+nodes/node_b = NodePath("../RigidBody4")
+
+[node name="RigidBody4" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58451, 0 )
+axis_lock_angular_y = true
+
+[node name="MeshInstance" type="MeshInstance" parent="RigidBody4"]
+mesh = ExtResource( 2 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="RigidBody4"]
+shape = ExtResource( 3 )
+
+[node name="PinJoint5" type="PinJoint" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.60058, 0 )
+nodes/node_a = NodePath("../RigidBody4")
+nodes/node_b = NodePath("../RigidBody5")
+
+[node name="RigidBody5" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.784728, 0 )
+axis_lock_angular_y = true
+
+[node name="MeshInstance" type="MeshInstance" parent="RigidBody5"]
+mesh = ExtResource( 2 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="RigidBody5"]
+shape = ExtResource( 3 )
+
+[node name="PinJoint6" type="PinJoint" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.800799, 0 )
+nodes/node_a = NodePath("../RigidBody5")
+nodes/node_b = NodePath("../RigidBody6")
+
+[node name="RigidBody6" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0148679, 0 )
+axis_lock_angular_y = true
+
+[node name="MeshInstance" type="MeshInstance" parent="RigidBody6"]
+mesh = ExtResource( 2 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="RigidBody6"]
+shape = ExtResource( 3 )
+
+[node name="PinJoint7" type="PinJoint" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00120246, 0 )
+nodes/node_a = NodePath("../RigidBody6")
+

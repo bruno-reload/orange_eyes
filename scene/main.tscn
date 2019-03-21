@@ -1,0 +1,112 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://import/black.png" type="Texture" id=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec2 pos;
+uniform int amount: hint_range(1,50);
+uniform vec4 col: hint_color;
+
+float circle(float r,vec2 center){
+	return  smoothstep(r - r*0.05,r + r*0.05,length(center));
+}
+vec2 moviment(vec2 fragment, vec2 res){
+	float p = res.y/res.x;
+	vec2 coordinate_cartesian = vec2(0.0,1.0)*p;
+	vec2 mouse_pos = pos;
+	mouse_pos.y *= p;
+	fragment.y *= p;
+	return fragment - mouse_pos - coordinate_cartesian;
+}
+
+void fragment(){
+	vec2 res = 1.0/SCREEN_PIXEL_SIZE;
+	vec2 _st = FRAGCOORD.xy/res;
+	
+	_st = moviment(_st,res);
+	
+	COLOR = vec4(col.rgb,circle(.05,_st)*step(1.0,COLOR.a));
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/pos = Vector2( 0, 0 )
+shader_param/amount = 3
+shader_param/col = Color( 0.956863, 0.545098, 0.270588, 1 )
+
+[sub_resource type="GDScript" id=3]
+script/source = "tool
+extends Sprite
+
+var limit_time : float = 0.0
+var pos : Array = Array()
+var limit_vector: int = 3
+var  vector_index : int = 0;
+
+func _ready():
+	pos = [Vector2()]
+
+func _process(delta):
+	vector_index = (vector_index + 1) % pos.size()
+	limit_time += delta
+	
+	material.set_shader_param(\"amount\",limit_vector)
+	material.set_shader_param(\"pos\",pos[vector_index])
+	
+
+func _input(event):
+	if event is InputEventMouse:#  Button and event.is_pressed():
+		
+		var x_screen_size = get_viewport().get_visible_rect().size.x
+		var y_screen_size = get_viewport().get_visible_rect().size.y
+		
+		if limit_time > .1 and pos.size() <= limit_vector:
+			
+			
+			var p : Vector2 = Vector2()
+			
+			p.x = event.position.x/x_screen_size
+			p.y = event.position.y/y_screen_size*(-1)
+			
+			pos.append(p)
+			
+			if limit_vector < pos.size():
+				pos.erase(pos[0])
+				pass
+			
+			limit_time = 0.0"
+
+[node name="main" type="Node"]
+
+[node name="Control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="ViewportContainer" type="ViewportContainer" parent="Control"]
+margin_right = 1080.0
+margin_bottom = 600.0
+
+[node name="Viewport" type="Viewport" parent="Control/ViewportContainer"]
+size = Vector2( 1080, 600 )
+own_world = true
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="eyes" type="Node2D" parent="Control/ViewportContainer/Viewport"]
+
+[node name="test_background" type="Sprite" parent="Control/ViewportContainer/Viewport/eyes"]
+scale = Vector2( 16, 9.37 )
+texture = ExtResource( 1 )
+centered = false
+region_rect = Rect2( 0, 0, 66, 63 )
+
+[node name="Sprite" type="Sprite" parent="Control/ViewportContainer/Viewport/eyes"]
+material = SubResource( 2 )
+scale = Vector2( 1024, 600 )
+texture = ExtResource( 2 )
+centered = false
+script = SubResource( 3 )
+
