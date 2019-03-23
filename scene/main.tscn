@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
-[ext_resource path="res://import/black.png" type="Texture" id=2]
+[ext_resource path="res://import/black1024X600.png" type="Texture" id=2]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -9,6 +9,7 @@ code = "shader_type canvas_item;
 uniform vec2 pos;
 uniform int amount: hint_range(1,50);
 uniform vec4 col: hint_color;
+uniform sampler2D image:hint_albedo;
 
 float circle(float r,vec2 center){
 	return  smoothstep(r - r*0.05,r + r*0.05,length(center));
@@ -17,18 +18,24 @@ vec2 moviment(vec2 fragment, vec2 res){
 	float p = res.y/res.x;
 	vec2 coordinate_cartesian = vec2(0.0,1.0)*p;
 	vec2 mouse_pos = pos;
+	
 	mouse_pos.y *= p;
 	fragment.y *= p;
+	
 	return fragment - mouse_pos - coordinate_cartesian;
 }
 
 void fragment(){
 	vec2 res = 1.0/SCREEN_PIXEL_SIZE;
 	vec2 _st = FRAGCOORD.xy/res;
+	vec4 buff;
+	vec4 color;
 	
 	_st = moviment(_st,res);
 	
-	COLOR = vec4(col.rgb,circle(.05,_st)*step(1.0,COLOR.a));
+	color = vec4(col.rgb,circle(.05,_st));
+	buff = texture(image,UV);
+	COLOR = buff*color;
 }"
 
 [sub_resource type="ShaderMaterial" id=2]
@@ -45,16 +52,21 @@ var limit_time : float = 0.0
 var pos : Array = Array()
 var limit_vector: int = 3
 var  vector_index : int = 0;
+var tex: Texture
 
 func _ready():
 	pos = [Vector2()]
+	tex = texture
 
 func _process(delta):
 	vector_index = (vector_index + 1) % pos.size()
 	limit_time += delta
 	
+	tex = material.shader.get_default_texture_param(\"TEXTURE\")
+	
 	material.set_shader_param(\"amount\",limit_vector)
 	material.set_shader_param(\"pos\",pos[vector_index])
+	material.set_shader_param(\"image\",tex)
 	
 
 func _input(event):
@@ -64,7 +76,6 @@ func _input(event):
 		var y_screen_size = get_viewport().get_visible_rect().size.y
 		
 		if limit_time > .1 and pos.size() <= limit_vector:
-			
 			
 			var p : Vector2 = Vector2()
 			
@@ -82,17 +93,18 @@ func _input(event):
 [node name="main" type="Node"]
 
 [node name="Control" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 1024.0
+margin_bottom = 600.0
 
 [node name="ViewportContainer" type="ViewportContainer" parent="Control"]
-margin_right = 1080.0
+margin_right = 1024.0
 margin_bottom = 600.0
 
 [node name="Viewport" type="Viewport" parent="Control/ViewportContainer"]
-size = Vector2( 1080, 600 )
-own_world = true
+arvr = true
+size = Vector2( 1024, 600 )
 handle_input_locally = false
+usage = 0
 render_target_update_mode = 3
 
 [node name="eyes" type="Node2D" parent="Control/ViewportContainer/Viewport"]
@@ -105,7 +117,6 @@ region_rect = Rect2( 0, 0, 66, 63 )
 
 [node name="Sprite" type="Sprite" parent="Control/ViewportContainer/Viewport/eyes"]
 material = SubResource( 2 )
-scale = Vector2( 1024, 600 )
 texture = ExtResource( 2 )
 centered = false
 script = SubResource( 3 )
