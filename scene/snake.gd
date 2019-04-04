@@ -21,7 +21,7 @@ func _input(event: InputEvent) -> void:
 
 		if timeout or distance_check(current_point):
 			update_line(current_point)
-	
+
 
 func update_line(current_point: Vector2) -> void:
 	var loop_size := 1

@@ -1,11 +1,11 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://scene/simple_grid.gd" type="Script" id=1]
-[ext_resource path="res://scene/targetSpawnerPosition.tres.gd" type="Script" id=2]
-[ext_resource path="res://scene/assets/target.tscn" type="PackedScene" id=3]
-[ext_resource path="res://import/white.png" type="Texture" id=4]
-[ext_resource path="res://scene/foreground.tres.gd" type="Script" id=5]
-[ext_resource path="res://scene/snake.tres.gd" type="Script" id=6]
+[ext_resource path="res://scene/snake.gd" type="Script" id=2]
+[ext_resource path="res://scene/targetSpawnerPosition.gd" type="Script" id=3]
+[ext_resource path="res://scene/assets/target.tscn" type="PackedScene" id=4]
+[ext_resource path="res://import/white.png" type="Texture" id=5]
+[ext_resource path="res://scene/foreground.gd" type="Script" id=6]
 [ext_resource path="res://import/sound_6-7/D6.wav" type="AudioStream" id=7]
 [ext_resource path="res://import/sound_6-7/B6.wav" type="AudioStream" id=8]
 [ext_resource path="res://import/sound_6-7/C6.wav" type="AudioStream" id=9]
@@ -14,10 +14,32 @@
 [ext_resource path="res://import/sound_6-7/F6.wav" type="AudioStream" id=12]
 [ext_resource path="res://import/sound_6-7/G6.wav" type="AudioStream" id=13]
 
-[sub_resource type="Gradient" id=1]
-colors = PoolColorArray( 1, 1, 1, 0.576471, 0, 0, 0, 1 )
+[sub_resource type="GDScript" id=1]
+script/source = "extends Viewport
 
-[sub_resource type="Animation" id=2]
+onready var vp = get_tree().get_root()
+
+func _input(event):
+	vp.unhandled_input(event)"
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+
+uniform sampler2D mask :hint_albedo;
+uniform vec4 color :hint_color;
+
+void fragment(){
+	vec4 col = texture(mask,SCREEN_UV);
+	if (col.a >= 0.5){
+		COLOR = color*vec4(vec3(1.0),0.0);
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/color = Color( 1, 0.701961, 0.462745, 1 )
+
+[sub_resource type="Animation" id=4]
 loop = true
 tracks/0/type = "audio"
 tracks/0/path = NodePath("AudioStreamPlayer")
@@ -34,7 +56,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 )
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=5]
 loop = true
 tracks/0/type = "audio"
 tracks/0/path = NodePath("AudioStreamPlayer")
@@ -51,7 +73,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 )
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=6]
 tracks/0/type = "audio"
 tracks/0/path = NodePath("AudioStreamPlayer")
 tracks/0/interp = 1
@@ -67,7 +89,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 )
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=7]
 tracks/0/type = "audio"
 tracks/0/path = NodePath("AudioStreamPlayer")
 tracks/0/interp = 1
@@ -83,7 +105,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 )
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=8]
 tracks/0/type = "audio"
 tracks/0/path = NodePath("AudioStreamPlayer")
 tracks/0/interp = 1
@@ -99,7 +121,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 )
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=9]
 tracks/0/type = "audio"
 tracks/0/path = NodePath("AudioStreamPlayer")
 tracks/0/interp = 1
@@ -115,7 +137,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 )
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=10]
 tracks/0/type = "audio"
 tracks/0/path = NodePath("AudioStreamPlayer")
 tracks/0/interp = 1
@@ -131,7 +153,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 )
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=11]
 tracks/0/type = "audio"
 tracks/0/path = NodePath("AudioStreamPlayer")
 tracks/0/interp = 1
@@ -152,54 +174,81 @@ script = ExtResource( 1 )
 line = 8
 column = 16
 
-[node name="punishment" type="Timer" parent="."]
-autostart = true
+[node name="Control" type="Control" parent="."]
+editor/display_folded = true
+margin_right = 40.0
+margin_bottom = 40.0
 
-[node name="targetSpawnerPosition" type="Node2D" parent="."]
-script = ExtResource( 2 )
+[node name="ViewportContainer" type="ViewportContainer" parent="Control"]
+margin_right = 1024.0
+margin_bottom = 600.0
 
-[node name="target" parent="targetSpawnerPosition" instance=ExtResource( 3 )]
-position = Vector2( 104.542, 124.601 )
+[node name="Viewport" type="Viewport" parent="Control/ViewportContainer"]
+size = Vector2( 1024, 600 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+script = SubResource( 1 )
 
-[node name="foreground" type="Sprite" parent="."]
-modulate = Color( 0.960784, 0.541176, 0.262745, 0.368627 )
-scale = Vector2( 1024, 600 )
-texture = ExtResource( 4 )
-centered = false
-script = ExtResource( 5 )
+[node name="Node2D" type="Node2D" parent="Control/ViewportContainer/Viewport"]
 
-[node name="Line2D" type="Line2D" parent="foreground"]
-points = PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0 )
+[node name="Line2D" type="Line2D" parent="Control/ViewportContainer/Viewport/Node2D"]
+editor/display_folded = true
+rotation = -0.00322294
+scale = Vector2( 1023.99, 600.035 )
+points = PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 width = 0.05
-default_color = Color( 0.317647, 0.392157, 1, 1 )
-gradient = SubResource( 1 )
+default_color = Color( 0, 0, 0, 1 )
 texture_mode = 3080292
 joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
-script = ExtResource( 6 )
-grid = NodePath("../..")
+script = ExtResource( 2 )
+grid = NodePath("../../../../..")
 
-[node name="updateSnake" type="Timer" parent="foreground/Line2D"]
+[node name="updateSnake" type="Timer" parent="Control/ViewportContainer/Viewport/Node2D/Line2D"]
 autostart = true
 
+[node name="punishment" type="Timer" parent="."]
+autostart = true
+
+[node name="targetSpawnerPosition" type="Node2D" parent="."]
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="target" parent="targetSpawnerPosition" instance=ExtResource( 4 )]
+position = Vector2( 104.542, 124.601 )
+
+[node name="foreground" type="Sprite" parent="."]
+material = SubResource( 3 )
+scale = Vector2( 1024, 600 )
+texture = ExtResource( 5 )
+centered = false
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_group_": true
+}
+vp = NodePath("../Control/ViewportContainer/Viewport")
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/A6 = SubResource( 2 )
-anims/B6 = SubResource( 3 )
-anims/C6 = SubResource( 4 )
-anims/C7 = SubResource( 5 )
-anims/D6 = SubResource( 6 )
-anims/E6 = SubResource( 7 )
-anims/F6 = SubResource( 8 )
-anims/G6 = SubResource( 9 )
+anims/A6 = SubResource( 4 )
+anims/B6 = SubResource( 5 )
+anims/C6 = SubResource( 6 )
+anims/C7 = SubResource( 7 )
+anims/D6 = SubResource( 8 )
+anims/E6 = SubResource( 9 )
+anims/F6 = SubResource( 10 )
+anims/G6 = SubResource( 11 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 
+[connection signal="timeout" from="Control/ViewportContainer/Viewport/Node2D/Line2D/updateSnake" to="Control/ViewportContainer/Viewport/Node2D/Line2D" method="_on_timeout"]
+[connection signal="timeout" from="punishment" to="Control/ViewportContainer/Viewport/Node2D/Line2D" method="_punished"]
 [connection signal="timeout" from="punishment" to="foreground" method="_punished"]
-[connection signal="timeout" from="punishment" to="foreground/Line2D" method="_punished"]
 [connection signal="draw_cell" from="targetSpawnerPosition" to="foreground" method="_on_draw_cell"]
+[connection signal="clicked" from="targetSpawnerPosition/target" to="Control/ViewportContainer/Viewport/Node2D/Line2D" method="_on_target_clicked"]
 [connection signal="clicked" from="targetSpawnerPosition/target" to="targetSpawnerPosition" method="_on_target_clicked"]
-[connection signal="clicked" from="targetSpawnerPosition/target" to="foreground/Line2D" method="_on_target_clicked"]
 [connection signal="input_event" from="targetSpawnerPosition/target" to="targetSpawnerPosition/target" method="_input_event"]
-[connection signal="timeout" from="foreground/Line2D/updateSnake" to="foreground/Line2D" method="_on_timeout"]
