@@ -1,123 +1,205 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=23 format=2]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
-[ext_resource path="res://import/black1024X600.png" type="Texture" id=2]
+[ext_resource path="res://scene/simple_grid.gd" type="Script" id=1]
+[ext_resource path="res://scene/targetSpawnerPosition.tres.gd" type="Script" id=2]
+[ext_resource path="res://scene/assets/target.tscn" type="PackedScene" id=3]
+[ext_resource path="res://import/white.png" type="Texture" id=4]
+[ext_resource path="res://scene/foreground.tres.gd" type="Script" id=5]
+[ext_resource path="res://scene/snake.tres.gd" type="Script" id=6]
+[ext_resource path="res://import/sound_6-7/D6.wav" type="AudioStream" id=7]
+[ext_resource path="res://import/sound_6-7/B6.wav" type="AudioStream" id=8]
+[ext_resource path="res://import/sound_6-7/C6.wav" type="AudioStream" id=9]
+[ext_resource path="res://import/sound_6-7/C7.wav" type="AudioStream" id=10]
+[ext_resource path="res://import/sound_6-7/E6.wav" type="AudioStream" id=11]
+[ext_resource path="res://import/sound_6-7/F6.wav" type="AudioStream" id=12]
+[ext_resource path="res://import/sound_6-7/G6.wav" type="AudioStream" id=13]
 
-[sub_resource type="Shader" id=1]
-code = "shader_type canvas_item;
+[sub_resource type="Gradient" id=1]
+colors = PoolColorArray( 1, 1, 1, 0.576471, 0, 0, 0, 1 )
 
-uniform vec2 pos;
-uniform int amount: hint_range(1,50);
-uniform vec4 col: hint_color;
-uniform sampler2D image:hint_albedo;
-
-float circle(float r,vec2 center){
-	return  smoothstep(r - r*0.05,r + r*0.05,length(center));
+[sub_resource type="Animation" id=2]
+loop = true
+tracks/0/type = "audio"
+tracks/0/path = NodePath("AudioStreamPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 7 )
+} ],
+"times": PoolRealArray( 0 )
 }
-vec2 moviment(vec2 fragment, vec2 res){
-	float p = res.y/res.x;
-	vec2 coordinate_cartesian = vec2(0.0,1.0)*p;
-	vec2 mouse_pos = pos;
-	
-	mouse_pos.y *= p;
-	fragment.y *= p;
-	
-	return fragment - mouse_pos - coordinate_cartesian;
+
+[sub_resource type="Animation" id=3]
+loop = true
+tracks/0/type = "audio"
+tracks/0/path = NodePath("AudioStreamPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 8 )
+} ],
+"times": PoolRealArray( 0 )
 }
 
-void fragment(){
-	vec2 res = 1.0/SCREEN_PIXEL_SIZE;
-	vec2 _st = FRAGCOORD.xy/res;
-	vec4 buff;
-	vec4 color;
-	
-	_st = moviment(_st,res);
-	
-	color = vec4(col.rgb,circle(.05,_st));
-	buff = texture(image,UV);
-	COLOR = buff*color;
-}"
+[sub_resource type="Animation" id=4]
+tracks/0/type = "audio"
+tracks/0/path = NodePath("AudioStreamPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 9 )
+} ],
+"times": PoolRealArray( 0 )
+}
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
-shader_param/pos = Vector2( 0, 0 )
-shader_param/amount = 3
-shader_param/col = Color( 0.956863, 0.545098, 0.270588, 1 )
+[sub_resource type="Animation" id=5]
+tracks/0/type = "audio"
+tracks/0/path = NodePath("AudioStreamPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 10 )
+} ],
+"times": PoolRealArray( 0 )
+}
 
-[sub_resource type="GDScript" id=3]
-script/source = "tool
-extends Sprite
+[sub_resource type="Animation" id=6]
+tracks/0/type = "audio"
+tracks/0/path = NodePath("AudioStreamPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 7 )
+} ],
+"times": PoolRealArray( 0 )
+}
 
-var limit_time : float = 0.0
-var pos : Array = Array()
-var limit_vector: int = 3
-var  vector_index : int = 0;
-var tex: Texture
+[sub_resource type="Animation" id=7]
+tracks/0/type = "audio"
+tracks/0/path = NodePath("AudioStreamPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 11 )
+} ],
+"times": PoolRealArray( 0 )
+}
 
-func _ready():
-	pos = [Vector2()]
-	tex = texture
+[sub_resource type="Animation" id=8]
+tracks/0/type = "audio"
+tracks/0/path = NodePath("AudioStreamPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 12 )
+} ],
+"times": PoolRealArray( 0 )
+}
 
-func _process(delta):
-	vector_index = (vector_index + 1) % pos.size()
-	limit_time += delta
-	
-	tex = material.shader.get_default_texture_param(\"TEXTURE\")
-	
-	material.set_shader_param(\"amount\",limit_vector)
-	material.set_shader_param(\"pos\",pos[vector_index])
-	material.set_shader_param(\"image\",tex)
-	
+[sub_resource type="Animation" id=9]
+tracks/0/type = "audio"
+tracks/0/path = NodePath("AudioStreamPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 13 )
+} ],
+"times": PoolRealArray( 0 )
+}
 
-func _input(event):
-	if event is InputEventMouse:#  Button and event.is_pressed():
-		
-		var x_screen_size = get_viewport().get_visible_rect().size.x
-		var y_screen_size = get_viewport().get_visible_rect().size.y
-		
-		if limit_time > .1 and pos.size() <= limit_vector:
-			
-			var p : Vector2 = Vector2()
-			
-			p.x = event.position.x/x_screen_size
-			p.y = event.position.y/y_screen_size*(-1)
-			
-			pos.append(p)
-			
-			if limit_vector < pos.size():
-				pos.erase(pos[0])
-				pass
-			
-			limit_time = 0.0"
+[node name="grid" type="Node2D"]
+script = ExtResource( 1 )
+line = 8
+column = 16
 
-[node name="main" type="Node"]
+[node name="punishment" type="Timer" parent="."]
+autostart = true
 
-[node name="Control" type="Control" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
+[node name="targetSpawnerPosition" type="Node2D" parent="."]
+script = ExtResource( 2 )
 
-[node name="ViewportContainer" type="ViewportContainer" parent="Control"]
-margin_right = 1024.0
-margin_bottom = 600.0
+[node name="target" parent="targetSpawnerPosition" instance=ExtResource( 3 )]
+position = Vector2( 104.542, 124.601 )
 
-[node name="Viewport" type="Viewport" parent="Control/ViewportContainer"]
-arvr = true
-size = Vector2( 1024, 600 )
-handle_input_locally = false
-usage = 0
-render_target_update_mode = 3
-
-[node name="eyes" type="Node2D" parent="Control/ViewportContainer/Viewport"]
-
-[node name="test_background" type="Sprite" parent="Control/ViewportContainer/Viewport/eyes"]
-scale = Vector2( 16, 9.37 )
-texture = ExtResource( 1 )
+[node name="foreground" type="Sprite" parent="."]
+modulate = Color( 0.960784, 0.541176, 0.262745, 0.368627 )
+scale = Vector2( 1024, 600 )
+texture = ExtResource( 4 )
 centered = false
-region_rect = Rect2( 0, 0, 66, 63 )
+script = ExtResource( 5 )
 
-[node name="Sprite" type="Sprite" parent="Control/ViewportContainer/Viewport/eyes"]
-material = SubResource( 2 )
-texture = ExtResource( 2 )
-centered = false
-script = SubResource( 3 )
+[node name="Line2D" type="Line2D" parent="foreground"]
+points = PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0 )
+width = 0.05
+default_color = Color( 0.317647, 0.392157, 1, 1 )
+gradient = SubResource( 1 )
+texture_mode = 3080292
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+script = ExtResource( 6 )
+grid = NodePath("../..")
 
+[node name="updateSnake" type="Timer" parent="foreground/Line2D"]
+autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/A6 = SubResource( 2 )
+anims/B6 = SubResource( 3 )
+anims/C6 = SubResource( 4 )
+anims/C7 = SubResource( 5 )
+anims/D6 = SubResource( 6 )
+anims/E6 = SubResource( 7 )
+anims/F6 = SubResource( 8 )
+anims/G6 = SubResource( 9 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[connection signal="timeout" from="punishment" to="foreground" method="_punished"]
+[connection signal="timeout" from="punishment" to="foreground/Line2D" method="_punished"]
+[connection signal="draw_cell" from="targetSpawnerPosition" to="foreground" method="_on_draw_cell"]
+[connection signal="clicked" from="targetSpawnerPosition/target" to="targetSpawnerPosition" method="_on_target_clicked"]
+[connection signal="clicked" from="targetSpawnerPosition/target" to="foreground/Line2D" method="_on_target_clicked"]
+[connection signal="input_event" from="targetSpawnerPosition/target" to="targetSpawnerPosition/target" method="_input_event"]
+[connection signal="timeout" from="foreground/Line2D/updateSnake" to="foreground/Line2D" method="_on_timeout"]
