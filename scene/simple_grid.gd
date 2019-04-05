@@ -44,9 +44,9 @@ func set_cell_coordinate(coor: Vector2) -> void:
 	
 	emit_signal("cell_coordinate_select",coordinate) 
 
-func real_position() -> Vector2:
+func real_position(c :Vector2 = self.coordinate, size := Vector2(1024,600)) -> Vector2:
 	var fraction := Vector2(size.x/column,size.y/line)
-	var coord:= fraction*coordinate
+	var coord:= fraction*c
 	coord = coord - (fraction/2.0)
 	return coord
 

@@ -1,20 +1,24 @@
 extends Sprite
 
 var cell_list:= Array()
-export(NodePath) var vp
+export(NodePath) var grid
 
 func _ready():
-	vp = get_node(vp)
-
-#warning-ignore:unused_argument
-func _process(delta):
-	material.set_shader_param("mask",(vp as Viewport).get_texture())
-	update()
-
+	grid = get_node(grid)
+	
 func _on_draw_cell(point):
 	cell_list.append(point)
+	update()
 
 func _punished():
 	if cell_list.size():
 		cell_list.remove(0)
 
+func _draw():
+	for e in cell_list:
+		var quad := Vector2(1.0,1.0)/Vector2(grid.column, grid.line)
+		var pos :Vector2 = (e/grid.size) - (quad/2)
+		var rect := Rect2(pos, quad)
+		draw_rect(rect,Color.black)
+		
+		

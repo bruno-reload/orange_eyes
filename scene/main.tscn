@@ -1,18 +1,19 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://scene/simple_grid.gd" type="Script" id=1]
 [ext_resource path="res://scene/snake.gd" type="Script" id=2]
-[ext_resource path="res://scene/targetSpawnerPosition.gd" type="Script" id=3]
-[ext_resource path="res://scene/assets/target.tscn" type="PackedScene" id=4]
-[ext_resource path="res://import/white.png" type="Texture" id=5]
-[ext_resource path="res://scene/foreground.gd" type="Script" id=6]
-[ext_resource path="res://import/sound_6-7/D6.wav" type="AudioStream" id=7]
-[ext_resource path="res://import/sound_6-7/B6.wav" type="AudioStream" id=8]
-[ext_resource path="res://import/sound_6-7/C6.wav" type="AudioStream" id=9]
-[ext_resource path="res://import/sound_6-7/C7.wav" type="AudioStream" id=10]
-[ext_resource path="res://import/sound_6-7/E6.wav" type="AudioStream" id=11]
-[ext_resource path="res://import/sound_6-7/F6.wav" type="AudioStream" id=12]
-[ext_resource path="res://import/sound_6-7/G6.wav" type="AudioStream" id=13]
+[ext_resource path="res://import/white.png" type="Texture" id=3]
+[ext_resource path="res://scene/foreground.gd" type="Script" id=4]
+[ext_resource path="res://scene/targetSpawnerPosition.gd" type="Script" id=5]
+[ext_resource path="res://scene/assets/target.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scene/assets/foreground_shader.shader" type="Shader" id=7]
+[ext_resource path="res://import/sound_6-7/D6.wav" type="AudioStream" id=8]
+[ext_resource path="res://import/sound_6-7/B6.wav" type="AudioStream" id=9]
+[ext_resource path="res://import/sound_6-7/C6.wav" type="AudioStream" id=10]
+[ext_resource path="res://import/sound_6-7/C7.wav" type="AudioStream" id=11]
+[ext_resource path="res://import/sound_6-7/E6.wav" type="AudioStream" id=12]
+[ext_resource path="res://import/sound_6-7/F6.wav" type="AudioStream" id=13]
+[ext_resource path="res://import/sound_6-7/G6.wav" type="AudioStream" id=14]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Viewport
@@ -22,39 +23,27 @@ onready var vp = get_tree().get_root()
 func _input(event):
 	vp.unhandled_input(event)"
 
-[sub_resource type="Shader" id=2]
-code = "shader_type canvas_item;
-
-uniform sampler2D mask :hint_albedo;
-uniform vec4 color :hint_color;
-
-void fragment(){
-	vec4 col = texture(mask,SCREEN_UV);
-	if (col.a >= 0.5){
-		COLOR = color*vec4(vec3(1.0),0.0);
-	}
-}"
+[sub_resource type="ViewportTexture" id=2]
 
 [sub_resource type="ShaderMaterial" id=3]
-shader = SubResource( 2 )
-shader_param/color = Color( 1, 0.701961, 0.462745, 1 )
+shader = ExtResource( 7 )
+shader_param/line_mask = SubResource( 2 )
 
-[sub_resource type="Animation" id=4]
-loop = true
-tracks/0/type = "audio"
-tracks/0/path = NodePath("AudioStreamPlayer")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"clips": [ {
-"end_offset": 0.0,
-"start_offset": 0.0,
-"stream": ExtResource( 7 )
-} ],
-"times": PoolRealArray( 0 )
-}
+[sub_resource type="GDScript" id=4]
+script/source = "extends Sprite
+
+
+export(NodePath) var vp_line
+export(NodePath) var vp_quad
+
+func _ready():
+	vp_line = get_node(vp_line)
+	vp_quad = get_node(vp_quad)
+	
+func _process(delta):
+	material.set_shader_param(\"line_mask\", vp_line.get_texture())
+	material.set_shader_param(\"quad_mask\", vp_quad.get_texture())
+"
 
 [sub_resource type="Animation" id=5]
 loop = true
@@ -74,6 +63,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=6]
+loop = true
 tracks/0/type = "audio"
 tracks/0/path = NodePath("AudioStreamPlayer")
 tracks/0/interp = 1
@@ -116,7 +106,7 @@ tracks/0/keys = {
 "clips": [ {
 "end_offset": 0.0,
 "start_offset": 0.0,
-"stream": ExtResource( 7 )
+"stream": ExtResource( 11 )
 } ],
 "times": PoolRealArray( 0 )
 }
@@ -132,7 +122,7 @@ tracks/0/keys = {
 "clips": [ {
 "end_offset": 0.0,
 "start_offset": 0.0,
-"stream": ExtResource( 11 )
+"stream": ExtResource( 8 )
 } ],
 "times": PoolRealArray( 0 )
 }
@@ -169,30 +159,49 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 )
 }
 
+[sub_resource type="Animation" id=12]
+tracks/0/type = "audio"
+tracks/0/path = NodePath("AudioStreamPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 14 )
+} ],
+"times": PoolRealArray( 0 )
+}
+
 [node name="grid" type="Node2D"]
 script = ExtResource( 1 )
-line = 8
-column = 16
+line = 4
+column = 8
 
-[node name="Control" type="Control" parent="."]
-editor/display_folded = true
+[node name="punishment" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[node name="line_mask" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
 
-[node name="ViewportContainer" type="ViewportContainer" parent="Control"]
+[node name="ViewportContainer" type="ViewportContainer" parent="line_mask"]
 margin_right = 1024.0
 margin_bottom = 600.0
 
-[node name="Viewport" type="Viewport" parent="Control/ViewportContainer"]
+[node name="vp_line" type="Viewport" parent="line_mask/ViewportContainer"]
 size = Vector2( 1024, 600 )
 transparent_bg = true
 handle_input_locally = false
 render_target_update_mode = 3
 script = SubResource( 1 )
 
-[node name="Node2D" type="Node2D" parent="Control/ViewportContainer/Viewport"]
+[node name="Node2D" type="Node2D" parent="line_mask/ViewportContainer/vp_line"]
 
-[node name="Line2D" type="Line2D" parent="Control/ViewportContainer/Viewport/Node2D"]
+[node name="Line2D" type="Line2D" parent="line_mask/ViewportContainer/vp_line/Node2D"]
 editor/display_folded = true
 rotation = -0.00322294
 scale = Vector2( 1023.99, 600.035 )
@@ -206,49 +215,72 @@ end_cap_mode = 2
 script = ExtResource( 2 )
 grid = NodePath("../../../../..")
 
-[node name="updateSnake" type="Timer" parent="Control/ViewportContainer/Viewport/Node2D/Line2D"]
+[node name="updateSnake" type="Timer" parent="line_mask/ViewportContainer/vp_line/Node2D/Line2D"]
 autostart = true
 
-[node name="punishment" type="Timer" parent="."]
-autostart = true
+[node name="quad_mask" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="ViewportContainer" type="ViewportContainer" parent="quad_mask"]
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="vp_quad" type="Viewport" parent="quad_mask/ViewportContainer"]
+size = Vector2( 1024, 600 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="Node2D" type="Node2D" parent="quad_mask/ViewportContainer/vp_quad"]
+
+[node name="sprite" type="Sprite" parent="quad_mask/ViewportContainer/vp_quad/Node2D"]
+scale = Vector2( 1024, 600 )
+texture = ExtResource( 3 )
+centered = false
+script = ExtResource( 4 )
+grid = NodePath("../../../../..")
+
+[node name="background" type="Sprite" parent="."]
+scale = Vector2( 1024, 600 )
+texture = ExtResource( 3 )
+centered = false
 
 [node name="targetSpawnerPosition" type="Node2D" parent="."]
-script = ExtResource( 3 )
+script = ExtResource( 5 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="target" parent="targetSpawnerPosition" instance=ExtResource( 4 )]
-position = Vector2( 104.542, 124.601 )
+[node name="target" parent="targetSpawnerPosition" instance=ExtResource( 6 )]
+grid = NodePath("../..")
 
-[node name="foreground" type="Sprite" parent="."]
+[node name="foredround" type="Sprite" parent="."]
+modulate = Color( 0.972549, 0.6, 0.239216, 1 )
 material = SubResource( 3 )
 scale = Vector2( 1024, 600 )
-texture = ExtResource( 5 )
+texture = ExtResource( 3 )
 centered = false
-script = ExtResource( 6 )
-__meta__ = {
-"_edit_group_": true
-}
-vp = NodePath("../Control/ViewportContainer/Viewport")
+script = SubResource( 4 )
+vp_line = NodePath("../line_mask/ViewportContainer/vp_line")
+vp_quad = NodePath("../quad_mask/ViewportContainer/vp_quad")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/A6 = SubResource( 4 )
-anims/B6 = SubResource( 5 )
-anims/C6 = SubResource( 6 )
-anims/C7 = SubResource( 7 )
-anims/D6 = SubResource( 8 )
-anims/E6 = SubResource( 9 )
-anims/F6 = SubResource( 10 )
-anims/G6 = SubResource( 11 )
+anims/A6 = SubResource( 5 )
+anims/B6 = SubResource( 6 )
+anims/C6 = SubResource( 7 )
+anims/C7 = SubResource( 8 )
+anims/D6 = SubResource( 9 )
+anims/E6 = SubResource( 10 )
+anims/F6 = SubResource( 11 )
+anims/G6 = SubResource( 12 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 7 )
+stream = ExtResource( 8 )
 
-[connection signal="timeout" from="Control/ViewportContainer/Viewport/Node2D/Line2D/updateSnake" to="Control/ViewportContainer/Viewport/Node2D/Line2D" method="_on_timeout"]
-[connection signal="timeout" from="punishment" to="Control/ViewportContainer/Viewport/Node2D/Line2D" method="_punished"]
-[connection signal="timeout" from="punishment" to="foreground" method="_punished"]
-[connection signal="draw_cell" from="targetSpawnerPosition" to="foreground" method="_on_draw_cell"]
-[connection signal="clicked" from="targetSpawnerPosition/target" to="Control/ViewportContainer/Viewport/Node2D/Line2D" method="_on_target_clicked"]
+[connection signal="timeout" from="punishment" to="line_mask/ViewportContainer/vp_line/Node2D/Line2D" method="_punished"]
+[connection signal="timeout" from="punishment" to="quad_mask/ViewportContainer/vp_quad/Node2D/sprite" method="_punished"]
+[connection signal="timeout" from="line_mask/ViewportContainer/vp_line/Node2D/Line2D/updateSnake" to="line_mask/ViewportContainer/vp_line/Node2D/Line2D" method="_on_timeout"]
+[connection signal="draw_cell" from="targetSpawnerPosition" to="quad_mask/ViewportContainer/vp_quad/Node2D/sprite" method="_on_draw_cell"]
+[connection signal="clicked" from="targetSpawnerPosition/target" to="line_mask/ViewportContainer/vp_line/Node2D/Line2D" method="_on_target_clicked"]
 [connection signal="clicked" from="targetSpawnerPosition/target" to="targetSpawnerPosition" method="_on_target_clicked"]
-[connection signal="input_event" from="targetSpawnerPosition/target" to="targetSpawnerPosition/target" method="_input_event"]

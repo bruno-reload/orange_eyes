@@ -16,9 +16,9 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and !event.is_pressed():
 		status = pressed.OFF_DRAG
 	if event is InputEventScreenDrag or (event is InputEventMouseMotion and status == pressed.ON_DRAG):
-
+			
 		var current_point :Vector2 = event.position/grid.get_size()
-
+			
 		if timeout or distance_check(current_point):
 			update_line(current_point)
 
@@ -43,10 +43,12 @@ func distance_check(current_p:Vector2) -> bool:
 func _on_timeout():
 	timeout = true
 
-func _on_target_clicked(position):
-	add_point(position/grid.size)
-
-
 func _punished():
 	if points.size():
 		remove_point(0)
+
+
+#warning-ignore:unused_argument
+func _on_target_clicked(position):
+	add_point(get_point_position(points.size()-1))
+	

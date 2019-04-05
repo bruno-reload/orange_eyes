@@ -6,19 +6,23 @@
 script/source = "extends Area2D
 
 signal clicked(position)
+export(NodePath) var grid
 
+func _ready():
+	grid = get_node(grid)
+	transform.origin = grid.real_position(Vector2(int(grid.line / 2.0),int(grid.column/2.0)))
+	pass
 #warning-ignore:unused_argument
 #warning-ignore:unused_argument
 func _input_event(viewport, event, shape_idx):
 	if event is InputEventScreenTouch or event is InputEventMouseButton and event.is_pressed():
-		emit_signal(\"clicked\",event.position)
+		emit_signal(\"clicked\",transform.origin)
 "
 
 [node name="target" type="Area2D"]
-position = Vector2( 308.033, -86.4266 )
 script = SubResource( 1 )
 __meta__ = {
-"_edit_lock_": true
+"_edit_group_": true
 }
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
