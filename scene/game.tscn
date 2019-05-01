@@ -42,7 +42,34 @@
 [ext_resource path="res://test/open_eyes/open_eyes0030.png" type="Texture" id=40]
 
 [sub_resource type="GDScript" id=1]
-script/source = "extends Viewport
+script/source = "#*************************************************************************************************#
+#                                        game.tscn::1                                             #
+#                                                                                                 #
+#*************************************************************************************************#
+#                                    This file is part of:                                        #
+#                                         orange eyes                                             #
+#*************************************************************************************************#
+#*************************************************************************************************#
+#                            Copyright 2019 Bruno Correia da Silva                                #
+#                                                                                                 #
+#Permission is hereby granted, free of charge, to any person obtaining a copy of this     software#
+#and associated documentation files (the \"Software\"), to deal in the Software without restriction,#
+#including without limitation the rights to use, copy, modify, merge, publish,         distribute,#
+#sublicense, and/or sell copies of the Software, and to permit persons to whom     the Software is#
+# furnished to do so, subject to the following conditions:                                        #
+#                                                                                                 #
+#The above copyright notice and this permission notice shall be included in all copies          or#
+#substantial portions of the Software.                                                            #
+#                                                                                                 #
+#THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR               IMPLIED,#
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A         PARTICULAR#
+#PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE     LIABLE FOR#
+#ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR       OTHERWISE,#
+#ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN       THE#
+#SOFTWARE.                                                                                        #
+#*************************************************************************************************#
+
+extends Viewport
 
 onready var vp = get_tree().get_root()
 
@@ -65,7 +92,34 @@ shader = ExtResource( 10 )
 shader_param/line_mask = SubResource( 3 )
 
 [sub_resource type="GDScript" id=5]
-script/source = "extends Sprite
+script/source = "#*************************************************************************************************#
+#                                        game.tscn::5                                             #
+#                                                                                                 #
+#*************************************************************************************************#
+#                                    This file is part of:                                        #
+#                                         orange eyes                                             #
+#*************************************************************************************************#
+#*************************************************************************************************#
+#                            Copyright 2019 Bruno Correia da Silva                                #
+#                                                                                                 #
+#Permission is hereby granted, free of charge, to any person obtaining a copy of this     software#
+#and associated documentation files (the \"Software\"), to deal in the Software without restriction,#
+#including without limitation the rights to use, copy, modify, merge, publish,         distribute,#
+#sublicense, and/or sell copies of the Software, and to permit persons to whom     the Software is#
+# furnished to do so, subject to the following conditions:                                        #
+#                                                                                                 #
+#The above copyright notice and this permission notice shall be included in all copies          or#
+#substantial portions of the Software.                                                            #
+#                                                                                                 #
+#THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR               IMPLIED,#
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A         PARTICULAR#
+#PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE     LIABLE FOR#
+#ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR       OTHERWISE,#
+#ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN       THE#
+#SOFTWARE.                                                                                        #
+#*************************************************************************************************#
+
+extends Sprite
 
 
 export(NodePath) var vp_line
@@ -89,7 +143,34 @@ animations = [ {
 } ]
 
 [sub_resource type="GDScript" id=7]
-script/source = "extends AnimatedSprite
+script/source = "#*************************************************************************************************#
+#                                        game.tscn::7                                             #
+#                                                                                                 #
+#*************************************************************************************************#
+#                                    This file is part of:                                        #
+#                                         orange eyes                                             #
+#*************************************************************************************************#
+#*************************************************************************************************#
+#                            Copyright 2019 Bruno Correia da Silva                                #
+#                                                                                                 #
+#Permission is hereby granted, free of charge, to any person obtaining a copy of this     software#
+#and associated documentation files (the \"Software\"), to deal in the Software without restriction,#
+#including without limitation the rights to use, copy, modify, merge, publish,         distribute,#
+#sublicense, and/or sell copies of the Software, and to permit persons to whom     the Software is#
+# furnished to do so, subject to the following conditions:                                        #
+#                                                                                                 #
+#The above copyright notice and this permission notice shall be included in all copies          or#
+#substantial portions of the Software.                                                            #
+#                                                                                                 #
+#THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR               IMPLIED,#
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A         PARTICULAR#
+#PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE     LIABLE FOR#
+#ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR       OTHERWISE,#
+#ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN       THE#
+#SOFTWARE.                                                                                        #
+#*************************************************************************************************#
+
+extends AnimatedSprite
 
 func _ready():
 	play(\"default\")
@@ -111,7 +192,34 @@ tracks/0/keys = {
 }
 
 [sub_resource type="GDScript" id=9]
-script/source = "extends AnimationPlayer
+script/source = "#*************************************************************************************************#
+#                                        game.tscn::9                                             #
+#                                                                                                 #
+#*************************************************************************************************#
+#                                    This file is part of:                                        #
+#                                         orange eyes                                             #
+#*************************************************************************************************#
+#*************************************************************************************************#
+#                            Copyright 2019 Bruno Correia da Silva                                #
+#                                                                                                 #
+#Permission is hereby granted, free of charge, to any person obtaining a copy of this     software#
+#and associated documentation files (the \"Software\"), to deal in the Software without restriction,#
+#including without limitation the rights to use, copy, modify, merge, publish,         distribute,#
+#sublicense, and/or sell copies of the Software, and to permit persons to whom     the Software is#
+# furnished to do so, subject to the following conditions:                                        #
+#                                                                                                 #
+#The above copyright notice and this permission notice shall be included in all copies          or#
+#substantial portions of the Software.                                                            #
+#                                                                                                 #
+#THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR               IMPLIED,#
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A         PARTICULAR#
+#PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE     LIABLE FOR#
+#ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR       OTHERWISE,#
+#ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN       THE#
+#SOFTWARE.                                                                                        #
+#*************************************************************************************************#
+
+extends AnimationPlayer
 
 func _on_AnimatedSprite_animation_finished():
 	play(\"open_eyes\")
@@ -217,6 +325,9 @@ far = 300.0
 
 [node name="doctor" parent="doctor_work/ViewportContainer/Viewport/Spatial" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.313306, 0.250644, 0 )
+
+[node name="Skeleton" parent="doctor_work/ViewportContainer/Viewport/Spatial/doctor/Armature" index="0"]
+bones/11/bound_children = [ NodePath("BoneAttachment") ]
 
 [node name="Circle002" parent="doctor_work/ViewportContainer/Viewport/Spatial/doctor/Armature/Skeleton" index="1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0851514 )
