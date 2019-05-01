@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+<asset>
+	<contributor>
+		<author>Anonymous</author>
+		<authoring_tool>Collada Exporter for Blender 2.6+, by Juan Linietsky (juan@codenix.com)</authoring_tool>
+	</contributor>
+	<created>2019-04-23T14:09:37Z</created>
+	<modified>2019-04-23T14:09:37Z</modified>
+	<unit meter="1.0" name="meter"/>
+	<up_axis>Z_UP</up_axis>
+</asset>
+<library_geometries>
+	<geometry id="id-spline-2" name="blindman_path">
+		<spline closed="0">
+			<source id="id-spline-2-positions">
+				<float_array id="id-spline-2-positions-array" count="9"> -28.403762817382812 -9.347566604614258 -1.501196607023303e-07 -17.44850730895996 1.043075442314148 0.0 -0.4282125234603882 1.4442591667175293 0.0</float_array>
+				<technique_common>
+				<accessor source="#id-spline-2-positions-array" count="3.0" stride="3">
+					<param name="X" type="float"/>
+					<param name="Y" type="float"/>
+					<param name="Z" type="float"/>
+				</accessor>
+			</source>
+			<source id="id-spline-2-intangents">
+				<float_array id="id-spline-2-intangents-array" count="9"> -32.147396087646484 -13.04317855834961 3.60430476575857e-08 -21.376745223999023 -1.0582555532455444 -6.921031285855861e-07 -1.4282125234603882 1.4442591667175293 0.0</float_array>
+				<technique_common>
+				<accessor source="#id-spline-2-intangents-array" count="3.0" stride="3">
+					<param name="X" type="float"/>
+					<param name="Y" type="float"/>
+					<param name="Z" type="float"/>
+				</accessor>
+			</source>
+			<source id="id-spline-2-outtangents">
+				<float_array id="id-spline-2-outtangents-array" count="9"> -24.66012954711914 -5.651954650878906 -3.362823690622463e-07 -13.501962661743164 3.1541991233825684 6.953284810151672e-07 0.5717873573303223 1.4442591667175293 0.0</float_array>
+				<technique_common>
+				<accessor source="#id-spline-2-outtangents-array" count="3.0" stride="3">
+					<param name="X" type="float"/>
+					<param name="Y" type="float"/>
+					<param name="Z" type="float"/>
+				</accessor>
+			</source>
+			<source id="id-spline-2-interpolations">
+				<Name_array id="id-spline-2-interpolations-array" count="3"> BEZIER BEZIER BEZIER</Name_array>
+				<technique_common>
+				<accessor source="#id-spline-2-interpolations-array" count="3" stride="1">
+					<param name="INTERPOLATION" type="name"/>
+				</accessor>
+			</source>
+			<source id="id-spline-2-tilts">
+				<float_array id="id-spline-2-tilts-array" count="3"> 0.0 0.0 0.0</float_array>
+				<technique_common>
+				<accessor source="#id-spline-2-tilts-array" count="3" stride="1">
+					<param name="TILT" type="float"/>
+				</accessor>
+			</source>
+			<control_vertices>
+				<input semantic="POSITION" source="#id-spline-2-positions"/>
+				<input semantic="IN_TANGENT" source="#id-spline-2-intangents"/>
+				<input semantic="OUT_TANGENT" source="#id-spline-2-outtangents"/>
+				<input semantic="INTERPOLATION" source="#id-spline-2-interpolations"/>
+				<input semantic="TILT" source="#id-spline-2-tilts"/>
+			</control_vertices>
+		</spline>
+	</geometry>
+</library_geometries>
+<library_visual_scenes>
+	<visual_scene id="id-scene-1" name="scene">
+		<node id="BezierCurve.001" name="BezierCurve.001" type="NODE">
+			<matrix sid="transform"> 1.0 0.0 0.0 17.01280403137207 0.0 1.0 0.0 -4.409639358520508 0.0 0.0 1.0 1.9625794887542725 0.0 0.0 0.0 1.0  </matrix>
+			<instance_geometry url="#id-spline-2">
+			</instance_geometry>
+		</node>
+	</visual_scene>
+</library_visual_scenes>
+<library_animations>
+</library_animations>
+<scene>
+	<instance_visual_scene url="#id-scene-1" />
+</scene>
+</COLLADA>

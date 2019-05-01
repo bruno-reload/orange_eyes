@@ -1,0 +1,118 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scene/assets/doctor_character.tscn" type="PackedScene" id=1]
+[ext_resource path="res://resources/scalpel.mesh" type="ArrayMesh" id=2]
+[ext_resource path="res://resources/dome.tres" type="ArrayMesh" id=3]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Spatial
+
+func _on_animation_finished(anim_name):
+	scene_load.goto_scene(\"res://scene/game.tscn\")
+"
+
+[sub_resource type="Animation" id=2]
+resource_name = "doctor_cam_control"
+length = 8.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Camera:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 5.1868, 6.52435 ), Vector3( 0, 5.1868, 13.2429 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Camera:current")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 5, 8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Camera2:current")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 5, 8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, true ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("doctor")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 5.9, 8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ true ],
+"method": "set_eyes"
+}, {
+"args": [ false ],
+"method": "set_eyes"
+} ]
+}
+
+[node name="Spatial" type="Spatial"]
+script = SubResource( 1 )
+
+[node name="doctor" parent="." instance=ExtResource( 1 )]
+
+[node name="Circle002" parent="doctor/Armature/Skeleton" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0798142 )
+
+[node name="BoneAttachment" type="BoneAttachment" parent="doctor/Armature/Skeleton" index="8"]
+transform = Transform( 0.0692335, -0.164181, -0.983997, 0.00978416, 0.986429, -0.163898, 0.997552, 0.00171958, 0.0699001, 6.71332, 5.19281, 0.107737 )
+bone_name = "hand.L"
+
+[node name="MeshInstance" type="MeshInstance" parent="doctor/Armature/Skeleton/BoneAttachment"]
+transform = Transform( 0.2834, 0.710237, -0.644399, 0.945468, -0.319415, 0.0637575, -0.160548, -0.627329, -0.762027, -0.202333, -0.169912, -0.195477 )
+mesh = ExtResource( 2 )
+material/0 = null
+
+[node name="AnimationPlayer" parent="doctor" index="1"]
+autoplay = "raisingHerArms"
+playback_speed = 0.5
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, -8.74228e-08, 0, 3.20702, 0, 8.74228e-08, 0, 1, 0, 7.89292, 0 )
+mesh = ExtResource( 3 )
+material/0 = null
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.986794, -0.161978, 0, 0.161978, 0.986794, 0, 5.1868, 13.2429 )
+far = 744.7
+
+[node name="Camera2" type="Camera" parent="."]
+transform = Transform( 0.999581, -0.0289335, 1.77949e-08, 0.0285076, 0.984867, 0.170949, -0.00494616, -0.170877, 0.98528, -0.149245, 7.89583, 6.24222 )
+current = true
+fov = 25.0
+far = 5377.9
+
+[node name="OmniLight" type="OmniLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.62059, 0.784135, 0, -0.784135, 0.62059, 0, 18.7734, 9.854 )
+omni_range = 62.5608
+omni_attenuation = 0.176777
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "doctor_cam_control"
+anims/doctor_cam_control = SubResource( 2 )
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_finished"]
+
+[editable path="doctor"]

@@ -18,7 +18,7 @@ func _process(delta):
 	set_size(get_viewport().get_visible_rect().size)
 
 func _input(event):
-	if (event is InputEventMouseButton || event is InputEventScreenTouch) && event.is_pressed():
+	if event is InputEventMouseButton and event.is_pressed():
 			
 		set_cell_coordinate(event.position)
 
@@ -28,7 +28,7 @@ func get_delta_size():
 func set_size(grid_size: Vector2 ) -> void:
 	size = grid_size
 
-func get_size():
+func get_size() -> Vector2:
 	return size
        
 func get_cell_coordinate() -> Vector2:

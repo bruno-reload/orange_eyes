@@ -1,4 +1,51 @@
-[gd_resource type="ArrayMesh" format=2]
+[gd_resource type="ArrayMesh" load_steps=4 format=2]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_unshaded = true
+params_cull_mode = 1
+params_grow = true
+params_grow_amount = 0.08
+albedo_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="Shader" id=2]
+code = "shader_type spatial;
+render_mode unshaded, cull_disabled;
+
+uniform vec4 color : hint_color;
+uniform float step_1 : hint_range(0.0,1.0);
+uniform float step_2 : hint_range(0.0,1.0);
+uniform float step_3 : hint_range(0.0,1.0);
+
+uniform sampler2D texture_albedo : hint_albedo;
+
+uniform vec2 pos ;
+
+void fragment(){
+	
+	vec4 albedo_tex = texture(texture_albedo,UV);
+	
+	vec3 center = vec3(length(NORMAL.xy - pos));
+	
+	vec3 circle_1 = step(step_1, center);
+	vec3 circle_2 = step(step_2, center);
+	vec3 circle_3 = step(step_3, center);
+	
+	vec3 st = max(step(circle_1,vec3(0.0)),color.rgb);
+	st *= max(step(circle_2,vec3(0.0)),color.rgb);
+	st *= max(step(circle_3,vec3(0.0)),color.rgb);
+	st *= color.rgb;
+	ALBEDO = st*albedo_tex.rgb;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=3]
+next_pass = SubResource( 1 )
+shader = SubResource( 2 )
+shader_param/color = Color( 1, 0.662745, 0.662745, 1 )
+shader_param/step_1 = 0.917
+shader_param/step_2 = 0.419
+shader_param/step_3 = 0.082
+shader_param/pos = Vector2( 0.28, 0.53 )
 
 [resource]
 resource_name = "Sphere"
@@ -9,6 +56,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 3456,
+"material": SubResource( 3 ),
 "name": "bumps",
 "primitive": 4,
 "skeleton_aabb": [  ],

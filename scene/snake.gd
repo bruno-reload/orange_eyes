@@ -15,7 +15,7 @@ func _input(event: InputEvent) -> void:
 		status = pressed.ON_DRAG
 	elif event is InputEventMouseButton and !event.is_pressed():
 		status = pressed.OFF_DRAG
-	if event is InputEventScreenDrag or (event is InputEventMouseMotion and status == pressed.ON_DRAG):
+	if event is InputEventMouseMotion and status == pressed.ON_DRAG:
 			
 		var current_point :Vector2 = event.position/grid.get_size()
 			
@@ -46,6 +46,8 @@ func _on_timeout():
 func _punished():
 	if points.size():
 		remove_point(0)
+	if points.size() >= 0:
+		scene_load.goto_scene("res://scene/ui.tscn")
 
 
 #warning-ignore:unused_argument

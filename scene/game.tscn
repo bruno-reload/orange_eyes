@@ -1,0 +1,269 @@
+[gd_scene load_steps=50 format=2]
+
+[ext_resource path="res://scene/simple_grid.gd" type="Script" id=1]
+[ext_resource path="res://scene/snake.gd" type="Script" id=2]
+[ext_resource path="res://import/white.png" type="Texture" id=3]
+[ext_resource path="res://scene/foreground.gd" type="Script" id=4]
+[ext_resource path="res://import/bacground.png" type="Texture" id=5]
+[ext_resource path="res://scene/assets/doctor_character.tscn" type="PackedScene" id=6]
+[ext_resource path="res://resources/scalpel.mesh" type="ArrayMesh" id=7]
+[ext_resource path="res://scene/targetSpawnerPosition.gd" type="Script" id=8]
+[ext_resource path="res://scene/assets/target.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scene/assets/foreground_shader.shader" type="Shader" id=10]
+[ext_resource path="res://test/open_eyes/open_eyes0001.png" type="Texture" id=11]
+[ext_resource path="res://test/open_eyes/open_eyes0002.png" type="Texture" id=12]
+[ext_resource path="res://test/open_eyes/open_eyes0003.png" type="Texture" id=13]
+[ext_resource path="res://test/open_eyes/open_eyes0004.png" type="Texture" id=14]
+[ext_resource path="res://test/open_eyes/open_eyes0005.png" type="Texture" id=15]
+[ext_resource path="res://test/open_eyes/open_eyes0006.png" type="Texture" id=16]
+[ext_resource path="res://test/open_eyes/open_eyes0007.png" type="Texture" id=17]
+[ext_resource path="res://test/open_eyes/open_eyes0008.png" type="Texture" id=18]
+[ext_resource path="res://test/open_eyes/open_eyes0009.png" type="Texture" id=19]
+[ext_resource path="res://test/open_eyes/open_eyes0010.png" type="Texture" id=20]
+[ext_resource path="res://test/open_eyes/open_eyes0011.png" type="Texture" id=21]
+[ext_resource path="res://test/open_eyes/open_eyes0012.png" type="Texture" id=22]
+[ext_resource path="res://test/open_eyes/open_eyes0013.png" type="Texture" id=23]
+[ext_resource path="res://test/open_eyes/open_eyes0014.png" type="Texture" id=24]
+[ext_resource path="res://test/open_eyes/open_eyes0015.png" type="Texture" id=25]
+[ext_resource path="res://test/open_eyes/open_eyes0016.png" type="Texture" id=26]
+[ext_resource path="res://test/open_eyes/open_eyes0017.png" type="Texture" id=27]
+[ext_resource path="res://test/open_eyes/open_eyes0018.png" type="Texture" id=28]
+[ext_resource path="res://test/open_eyes/open_eyes0019.png" type="Texture" id=29]
+[ext_resource path="res://test/open_eyes/open_eyes0020.png" type="Texture" id=30]
+[ext_resource path="res://test/open_eyes/open_eyes0021.png" type="Texture" id=31]
+[ext_resource path="res://test/open_eyes/open_eyes0022.png" type="Texture" id=32]
+[ext_resource path="res://test/open_eyes/open_eyes0023.png" type="Texture" id=33]
+[ext_resource path="res://test/open_eyes/open_eyes0024.png" type="Texture" id=34]
+[ext_resource path="res://test/open_eyes/open_eyes0025.png" type="Texture" id=35]
+[ext_resource path="res://test/open_eyes/open_eyes0026.png" type="Texture" id=36]
+[ext_resource path="res://test/open_eyes/open_eyes0027.png" type="Texture" id=37]
+[ext_resource path="res://test/open_eyes/open_eyes0028.png" type="Texture" id=38]
+[ext_resource path="res://test/open_eyes/open_eyes0029.png" type="Texture" id=39]
+[ext_resource path="res://test/open_eyes/open_eyes0030.png" type="Texture" id=40]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Viewport
+
+onready var vp = get_tree().get_root()
+
+func _input(event):
+	vp.unhandled_input(event)"
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends ViewportContainer
+
+func _on_target_clicked(position):
+	var final_positon =  position - Vector2(1024,1200)/2
+	$Tween.interpolate_property(self,\"rect_position\",get_position(),final_positon,1.0,Tween.TRANS_QUAD,Tween.EASE_IN_OUT)
+	$Tween.start()
+"
+
+[sub_resource type="ViewportTexture" id=3]
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = ExtResource( 10 )
+shader_param/line_mask = SubResource( 3 )
+
+[sub_resource type="GDScript" id=5]
+script/source = "extends Sprite
+
+
+export(NodePath) var vp_line
+export(NodePath) var vp_quad
+
+func _ready():
+	vp_line = get_node(vp_line)
+	vp_quad = get_node(vp_quad)
+	
+func _process(delta):
+	material.set_shader_param(\"line_mask\", vp_line.get_texture())
+	material.set_shader_param(\"quad_mask\", vp_quad.get_texture())
+"
+
+[sub_resource type="SpriteFrames" id=6]
+animations = [ {
+"frames": [ ExtResource( 11 ), ExtResource( 11 ), ExtResource( 11 ), ExtResource( 11 ), ExtResource( 11 ), ExtResource( 11 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 34 ), ExtResource( 35 ), ExtResource( 36 ), ExtResource( 37 ), ExtResource( 38 ), ExtResource( 39 ), ExtResource( 40 ) ],
+"loop": false,
+"name": "default",
+"speed": 30.0
+} ]
+
+[sub_resource type="GDScript" id=7]
+script/source = "extends AnimatedSprite
+
+func _ready():
+	play(\"default\")
+	pass"
+
+[sub_resource type="Animation" id=8]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="GDScript" id=9]
+script/source = "extends AnimationPlayer
+
+func _on_AnimatedSprite_animation_finished():
+	play(\"open_eyes\")
+"
+
+[node name="game" type="Node2D"]
+script = ExtResource( 1 )
+line = 4
+column = 8
+
+[node name="punishment" type="Timer" parent="."]
+wait_time = 20.0
+autostart = true
+
+[node name="line_mask" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ViewportContainer" type="ViewportContainer" parent="line_mask"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="vp_line" type="Viewport" parent="line_mask/ViewportContainer"]
+size = Vector2( 1024, 600 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+script = SubResource( 1 )
+
+[node name="Node2D" type="Node2D" parent="line_mask/ViewportContainer/vp_line"]
+
+[node name="Line2D" type="Line2D" parent="line_mask/ViewportContainer/vp_line/Node2D"]
+editor/display_folded = true
+rotation = -0.00322294
+scale = Vector2( 1023.99, 600.035 )
+points = PoolVector2Array( 0.471333, 0.754247, 0.639337, 0.406122, 0.318592, 0.404357, 0.318268, 0.576236, 0.318917, 0.232479 )
+width = 0.05
+default_color = Color( 0, 0, 0, 1 )
+texture_mode = 3080292
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+script = ExtResource( 2 )
+grid = NodePath("../../../../../../game")
+
+[node name="updateSnake" type="Timer" parent="line_mask/ViewportContainer/vp_line/Node2D/Line2D"]
+autostart = true
+
+[node name="quad_mask" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ViewportContainer" type="ViewportContainer" parent="quad_mask"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="vp_quad" type="Viewport" parent="quad_mask/ViewportContainer"]
+size = Vector2( 1024, 600 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="Node2D" type="Node2D" parent="quad_mask/ViewportContainer/vp_quad"]
+
+[node name="sprite" type="Sprite" parent="quad_mask/ViewportContainer/vp_quad/Node2D"]
+scale = Vector2( 1024, 600 )
+texture = ExtResource( 3 )
+centered = false
+script = ExtResource( 4 )
+grid = NodePath("../../../../../../game")
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 5 )
+centered = false
+
+[node name="doctor_work" type="Control" parent="."]
+editor/display_folded = true
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="ViewportContainer" type="ViewportContainer" parent="doctor_work"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 984.0
+margin_bottom = 1216.0
+script = SubResource( 2 )
+
+[node name="Viewport" type="Viewport" parent="doctor_work/ViewportContainer"]
+size = Vector2( 1024, 1256 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="Spatial" type="Spatial" parent="doctor_work/ViewportContainer/Viewport"]
+
+[node name="DirectionalLight" type="DirectionalLight" parent="doctor_work/ViewportContainer/Viewport/Spatial"]
+transform = Transform( 1, 0, 0, 0, 0.37878, 0.925487, 0, -0.925487, 0.37878, 0, 0, 0 )
+
+[node name="Camera" type="Camera" parent="doctor_work/ViewportContainer/Viewport/Spatial"]
+transform = Transform( 1, 0, 0, 0, 0.990106, -0.140325, 0, 0.140325, 0.990106, -0.084379, 3.39434, 4.88389 )
+current = true
+far = 300.0
+
+[node name="doctor" parent="doctor_work/ViewportContainer/Viewport/Spatial" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.313306, 0.250644, 0 )
+
+[node name="Circle002" parent="doctor_work/ViewportContainer/Viewport/Spatial/doctor/Armature/Skeleton" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0851514 )
+
+[node name="BoneAttachment" type="BoneAttachment" parent="doctor_work/ViewportContainer/Viewport/Spatial/doctor/Armature/Skeleton" index="8"]
+transform = Transform( 0.0692335, -0.164181, -0.983997, 0.00978416, 0.986429, -0.163898, 0.997552, 0.00171958, 0.0699001, 6.71332, 5.19281, 0.107737 )
+bone_name = "hand.L"
+
+[node name="MeshInstance" type="MeshInstance" parent="doctor_work/ViewportContainer/Viewport/Spatial/doctor/Armature/Skeleton/BoneAttachment"]
+transform = Transform( 0.821885, 0.557071, 0.119066, 0.181457, -0.454147, 0.872252, 0.539979, -0.695286, -0.474341, -0.138603, 0.00119591, -0.111832 )
+mesh = ExtResource( 7 )
+material/0 = null
+
+[node name="Tween" type="Tween" parent="doctor_work/ViewportContainer"]
+
+[node name="targetSpawnerPosition" type="Node2D" parent="."]
+script = ExtResource( 8 )
+
+[node name="target" parent="targetSpawnerPosition" instance=ExtResource( 9 )]
+grid = NodePath("../../../game")
+
+[node name="foreground" type="Sprite" parent="."]
+modulate = Color( 0.972549, 0.6, 0.239216, 1 )
+material = SubResource( 4 )
+scale = Vector2( 1024, 600 )
+texture = ExtResource( 3 )
+centered = false
+script = SubResource( 5 )
+vp_line = NodePath("../../game/line_mask/ViewportContainer/vp_line")
+vp_quad = NodePath("../../game/quad_mask/ViewportContainer/vp_quad")
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 6 )
+centered = false
+script = SubResource( 7 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/open_eyes = SubResource( 8 )
+script = SubResource( 9 )
+
+[connection signal="timeout" from="punishment" to="quad_mask/ViewportContainer/vp_quad/Node2D/sprite" method="_punished"]
+[connection signal="timeout" from="punishment" to="line_mask/ViewportContainer/vp_line/Node2D/Line2D" method="_punished"]
+[connection signal="timeout" from="line_mask/ViewportContainer/vp_line/Node2D/Line2D/updateSnake" to="line_mask/ViewportContainer/vp_line/Node2D/Line2D" method="_on_timeout"]
+[connection signal="draw_cell" from="targetSpawnerPosition" to="quad_mask/ViewportContainer/vp_quad/Node2D/sprite" method="_on_draw_cell"]
+[connection signal="clicked" from="targetSpawnerPosition/target" to="doctor_work/ViewportContainer" method="_on_target_clicked"]
+[connection signal="clicked" from="targetSpawnerPosition/target" to="line_mask/ViewportContainer/vp_line/Node2D/Line2D" method="_on_target_clicked"]
+[connection signal="clicked" from="targetSpawnerPosition/target" to="targetSpawnerPosition" method="_on_target_clicked"]
+[connection signal="animation_finished" from="AnimatedSprite" to="AnimationPlayer" method="_on_AnimatedSprite_animation_finished"]
+
+[editable path="doctor_work/ViewportContainer/Viewport/Spatial/doctor"]

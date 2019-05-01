@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="Curve3D" id=1]
+_data = {
+"points": PoolVector3Array( -0.457113, 0.539489, 8.45825e-08, 3.01591, -3.5594, -5.58053e-07, 0.09634, -0.0161226, 5.76551e-09, -4.53638, -3.3855, -4.52743e-07, 0.80142, 0.598099, 7.99838e-08, 16.7409, -0.1393, -1.87161e-08 ),
+"tilts": PoolRealArray( 0, 0 )
+}
+
+[sub_resource type="SphereMesh" id=2]
+
+[node name="BezierCurve" type="Path"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.279038, 4.66663, 0.0890769 )
+curve = SubResource( 1 )
+
+[node name="PathFollow" type="PathFollow" parent="."]
+transform = Transform( -0.801873, -0.597497, -7.0654e-08, 0.597497, -0.801873, -2.46572e-07, 9.06708e-08, -2.39935e-07, 1, 0.09634, -0.0161226, 5.76551e-09 )
+loop = false
+
+[node name="Armature" type="Skeleton" parent="PathFollow"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09634, -0.0161228, 7.45058e-09 )
+bones_in_world_transform = true
+bones/0/name = "Bone"
+bones/0/parent = -1
+bones/0/rest = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+bones/0/enabled = true
+bones/0/bound_children = [  ]
+
+[node name="MeshInstance" type="MeshInstance" parent="PathFollow"]
+transform = Transform( 0.24136, -4.65661e-10, 0, 4.65661e-10, 0.24136, 0, -1.11022e-16, -1.73472e-18, 0.24136, 0, 0, 0 )
+mesh = SubResource( 2 )
+material/0 = null
+

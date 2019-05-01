@@ -19,10 +19,15 @@ config/name="orange_eyes"
 run/main_scene="res://scene/main.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+scene_load="*res://scene_load.gd"
+
 [display]
 
-window/stretch/mode="2d"
-window/stretch/aspect="keep"
+window/size/test_width=1024
+window/size/test_height=600
+window/stretch/mode="viewport"
 
 [importer_defaults]
 
@@ -40,6 +45,26 @@ wav={
 "force/max_rate_hz": 44100,
 "force/mono": false
 }
+texture={
+"compress/bptc_ldr": 0,
+"compress/hdr_mode": 0,
+"compress/lossy_quality": 0.7,
+"compress/mode": 2,
+"compress/normal_map": 0,
+"detect_3d": false,
+"flags/anisotropic": false,
+"flags/filter": true,
+"flags/mipmaps": true,
+"flags/repeat": true,
+"flags/srgb": 1,
+"process/HDR_as_SRGB": false,
+"process/fix_alpha_border": true,
+"process/invert_color": false,
+"process/premult_alpha": true,
+"size_limit": 0,
+"stream": false,
+"svg/scale": 1.0
+}
 
 [physics]
 
@@ -49,8 +74,4 @@ wav={
 [rendering]
 
 quality/driver/driver_name="GLES2"
-vram_compression/import_bptc=true
-vram_compression/import_etc=true
-vram_compression/import_pvrtc=true
 quality/filters/msaa=2
-environment/default_environment="res://default_env.tres"

@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://test/doctor.dae" type="PackedScene" id=1]
+[ext_resource path="res://test/doctor.material" type="Material" id=2]
+[ext_resource path="res://resources/shader/eyes.tres" type="Material" id=3]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Spatial
+
+var eyes_status :bool = false  setget set_eyes, get_eyes 
+var eyes_shader
+
+func _ready():
+	eyes_shader = $Armature/Skeleton/Cube005.get_surface_material(0)
+
+func set_eyes(value):
+	eyes_shader.set_shader_param(\"close\", value)
+
+func get_eyes():
+	eyes_shader.get_shader_param(\"close\")"
+
+[node name="doctor" instance=ExtResource( 1 )]
+script = SubResource( 1 )
+
+[node name="BezierCurve001" parent="Armature/Skeleton" index="0"]
+material/0 = ExtResource( 2 )
+
+[node name="Circle002" parent="Armature/Skeleton" index="1"]
+material/0 = ExtResource( 2 )
+
+[node name="Cube" parent="Armature/Skeleton" index="2"]
+material/0 = ExtResource( 2 )
+
+[node name="Cube001" parent="Armature/Skeleton" index="3"]
+material/0 = ExtResource( 2 )
+
+[node name="Cube002" parent="Armature/Skeleton" index="4"]
+material/0 = ExtResource( 2 )
+
+[node name="Cube005" parent="Armature/Skeleton" index="5"]
+material/0 = ExtResource( 3 )
+
+[node name="Cylinder" parent="Armature/Skeleton" index="6"]
+material/0 = ExtResource( 2 )
+
+[node name="Plane" parent="Armature/Skeleton" index="7"]
+material/0 = ExtResource( 2 )
+
+[node name="AnimationPlayer" parent="." index="1"]
+autoplay = "doctorBackground"
+

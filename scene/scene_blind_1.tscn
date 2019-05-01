@@ -1,0 +1,967 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://resources/dome.tres" type="ArrayMesh" id=1]
+[ext_resource path="res://scene/blind_and_chain.tscn" type="PackedScene" id=2]
+[ext_resource path="res://import/shadow.png" type="Texture" id=3]
+[ext_resource path="res://scene/assets/chain.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scene/assets/cone.tscn" type="PackedScene" id=5]
+[ext_resource path="res://resources/shadow.mesh" type="ArrayMesh" id=6]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Spatial
+
+func _on_animation_finished(anim_name):
+	scene_load.goto_scene(\"res://scene/scene_doctor_1.tscn\")
+"
+
+[sub_resource type="Curve3D" id=2]
+_data = {
+"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, 20.9484, 5.52947, -25.5631, 6.65146, -3.4154, -5.26815, -6.65146, 3.4154, 5.26815, 7.79422, 6.9289, -19.6132, -7.22282, -5.53356, -13.3303, 7.22282, 5.53356, 13.3303, 3.36422, 15.859, 14.5788, 0, 0, 0, 0, 0, 0, 24.1279, 23.0195, 40.0641 ),
+"tilts": PoolRealArray( 0, 0, 0, 0 )
+}
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends Camera
+
+export(NodePath) var target
+
+func _ready():
+	target = get_node(target)
+
+func _process(delta):
+	look_at(target.transform.origin ,Vector3(0.0,1.0,0.0))
+	pass
+"
+
+[sub_resource type="PlaneMesh" id=4]
+
+[sub_resource type="SpatialMaterial" id=5]
+flags_transparent = true
+params_billboard_mode = 2
+params_billboard_keep_scale = true
+albedo_color = Color( 0.32549, 0.32549, 0.32549, 1 )
+albedo_texture = ExtResource( 3 )
+
+[sub_resource type="Animation" id=6]
+length = 16.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Path/PathFollow:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 15.9 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 86.9136 ]
+}
+
+[sub_resource type="SpatialMaterial" id=7]
+flags_unshaded = true
+albedo_color = Color( 0.27451, 0.27451, 0.27451, 1 )
+
+[node name="blind_scene" type="Spatial"]
+script = SubResource( 1 )
+
+[node name="Path" type="Path" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20.2899, -4.05779, 13.7782 )
+curve = SubResource( 2 )
+
+[node name="PathFollow" type="PathFollow" parent="Path"]
+transform = Transform( 0.652432, 0.210488, 0.72803, -0.208868, 0.973392, -0.0942486, -0.728496, -0.0905707, 0.679037, 24.1279, 23.0195, 40.0641 )
+offset = 86.9136
+rotation_mode = 0
+loop = false
+
+[node name="Camera" type="Camera" parent="Path/PathFollow"]
+transform = Transform( 0.644225, -0.0663251, -0.761955, 0.20946, 0.973445, 0.0923605, 0.735595, -0.2191, 0.641009, 0, 0, 0 )
+near = 0.01
+far = 350.0
+script = SubResource( 3 )
+target = NodePath("../../../scene_blind_1/way/bus/blind")
+
+[node name="floor" type="MeshInstance" parent="."]
+transform = Transform( 4.90995, 0, 0, 0, 4.90995, 0, 0, 0, 4.90995, -0.378369, 20.5161, -0.315334 )
+cast_shadow = 0
+mesh = ExtResource( 1 )
+material/0 = null
+
+[node name="scene_blind_1" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20.2899, -4.05779, 13.7782 )
+
+[node name="bus" parent="scene_blind_1/way" index="0"]
+transform = Transform( 0.998891, 1.61908e-07, -0.0470822, 0, 1, 3.43783e-06, 0.0470891, -3.43452e-06, 0.998744, 4.37396, 0.308313, -17.2291 )
+
+[node name="blind" parent="scene_blind_1/way/bus" index="0"]
+transform = Transform( 0.95758, -3.1624e-06, 0.2881, 4.97435e-06, 1, -5.55813e-06, -0.288135, 6.75599e-06, 0.957616, 0.370749, 6.36268, -0.33396 )
+
+[node name="armature" parent="scene_blind_1/way/bus/blind" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="Cube000" parent="scene_blind_1/way/bus/blind/armature/Skeleton" index="0"]
+transform = Transform( 1, 0, 0, 2.27374e-13, 1, -1.7053e-13, 0, -2.27374e-13, 1, 0, 0, 0 )
+
+[node name="BoneAttachment" parent="scene_blind_1/way/bus/blind/armature/Skeleton" index="4"]
+transform = Transform( -0.0648983, 0.738786, -0.670808, 0.0697646, 0.673939, 0.735485, 0.99545, 0.000933126, -0.0952778, 2.33785, 1.54546, 0.592025 )
+
+[node name="MeshInstance" type="MeshInstance" parent="scene_blind_1/way/bus/blind" index="2"]
+transform = Transform( 2.58138, -3.45608e-11, -2.98023e-07, 1.36424e-11, 2.58138, -4.91127e-11, -1.19209e-07, 7.38964e-11, 2.58138, 0.147681, -1.69836, 0.703498 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="chain" parent="scene_blind_1" index="1"]
+visible = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "camera_scene_blindman_1"
+anims/camera_scene_blindman_1 = SubResource( 6 )
+
+[node name="Spatial" type="Spatial" parent="."]
+editor/display_folded = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.715938, 0 )
+
+[node name="Plane" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.3308, 0, 0, 0, -4.235e-08, -0.749977, 0, 0.968854, -3.27825e-08, 2.20585, 0.000109315, -29.7942 )
+
+[node name="Plane24" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.393639, 0.9255, -3.13156e-08, 0, -4.235e-08, -0.749977, -1.27125, -0.286579, 9.69679e-09, -32.5849, 0.000109315, -2.32148 )
+
+[node name="Plane32" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.692899, -0.827171, 2.79885e-08, 0, -4.235e-08, -0.749977, 1.13619, -0.504447, 1.70687e-08, 70.7475, 0.000109315, 0.291161 )
+
+[node name="Plane44" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.32898, -0.050619, 1.71277e-09, 0, -4.235e-08, -0.749977, 0.0695294, 0.967531, -3.27378e-08, -7.79172, 0.000109315, -79.297 )
+
+[node name="Plane56" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.33029, -0.0269241, 9.11014e-10, 0, -4.235e-08, -0.749977, 0.0369824, -0.96848, 3.27699e-08, 20.6127, 0.000109315, 62.4561 )
+
+[node name="Plane61" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.10131, 0.966043, -3.26874e-08, 0, -4.235e-08, -0.749977, -1.32694, 0.073756, -2.49564e-09, -71.0503, 0.000109315, -40.4787 )
+
+[node name="Plane79" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.93985, 0.685934, -2.32096e-08, 0, -4.235e-08, -0.749977, -0.942189, -0.684232, 2.3152e-08, 94.6754, 0.000109315, -31.5573 )
+
+[node name="Plane85" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.93985, 0.685934, -2.32096e-08, 0, -4.235e-08, -0.749977, -0.942189, -0.684232, 2.3152e-08, -40.6343, 0.000109315, 41.4801 )
+
+[node name="Plane108" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.32153, 0.114194, -3.8639e-09, 0, -4.235e-08, -0.749977, -0.156855, 0.962101, -3.25541e-08, -20.6978, 0.000109315, 91.8253 )
+
+[node name="Plane2" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.908439, -0.708007, 2.39564e-08, 0, -4.235e-08, -0.749977, 0.972506, 0.661365, -2.23782e-08, 17.5894, -0.000134826, -23.0696 )
+
+[node name="Plane22" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.66028, 0.841193, -2.84629e-08, 0, -4.235e-08, -0.749977, -1.15545, 0.4807, -1.62652e-08, -30.7116, -0.000134826, -19.0058 )
+
+[node name="Plane30" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.30328, -0.196015, 6.63243e-09, 0, -4.235e-08, -0.749977, 0.269242, -0.948819, 3.21046e-08, 56.9967, -0.000134826, 9.92387 )
+
+[node name="Plane42" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.856389, -0.741594, 2.50929e-08, 0, -4.235e-08, -0.749977, 1.01864, 0.623471, -2.1096e-08, 7.21954, -0.000134826, -71.7779 )
+
+[node name="Plane54" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.935114, 0.689355, -2.33253e-08, 0, -4.235e-08, -0.749977, -0.946885, -0.680785, 2.30353e-08, 5.04816, -0.000134826, 56.1617 )
+
+[node name="Plane62" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.03884, 0.605547, -2.04895e-08, 0, -4.235e-08, -0.749977, -0.831769, 0.756301, -2.55905e-08, -63.1743, -0.000134826, -55.3057 )
+
+[node name="Plane80" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.0469543, 0.968251, -3.27621e-08, 0, -4.235e-08, -0.749977, -1.32997, 0.0341842, -1.15669e-09, 88.5719, -0.000134826, -47.1977 )
+
+[node name="Plane93" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.0469543, 0.968251, -3.27621e-08, 0, -4.235e-08, -0.749977, -1.32997, 0.0341842, -1.15669e-09, -46.7378, -0.000134826, 25.8397 )
+
+[node name="Plane3" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.33079, 0.00456622, -1.54502e-10, 0, -4.235e-08, -0.749977, -0.00627208, 0.968843, -3.27822e-08, 33.0743, -0.000134826, -16.4323 )
+
+[node name="Plane13" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.399626, 0.924139, -3.12696e-08, 0, -4.235e-08, -0.749977, -1.26938, -0.290937, 9.84427e-09, -28.9515, -0.000134826, -35.761 )
+
+[node name="Plane34" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.687537, -0.829539, 2.80686e-08, 0, -4.235e-08, -0.749977, 1.13944, -0.500543, 1.69366e-08, 43.2675, -0.000134826, 19.6884 )
+
+[node name="Plane46" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.3293, -0.0460585, 1.55845e-09, 0, -4.235e-08, -0.749977, 0.0632651, 0.967758, -3.27455e-08, 22.3365, -0.000134826, -64.3406 )
+
+[node name="Plane57" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.3301, -0.0314882, 1.06545e-09, 0, -4.235e-08, -0.749977, 0.0432516, -0.968342, 3.27652e-08, -10.6152, -0.000134826, 49.9571 )
+
+[node name="Plane64" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.0950552, 0.966379, -3.26988e-08, 0, -4.235e-08, -0.749977, -1.3274, 0.0692022, -2.34155e-09, -55.3773, -0.000134826, -70.2403 )
+
+[node name="Plane82" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.94428, 0.682701, -2.31002e-08, 0, -4.235e-08, -0.749977, -0.937748, -0.687457, 2.32611e-08, 82.3352, -0.000134826, -62.8483 )
+
+[node name="Plane94" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.94428, 0.682701, -2.31002e-08, 0, -4.235e-08, -0.749977, -0.937748, -0.687457, 2.32611e-08, -52.9745, -0.000134826, 10.1891 )
+
+[node name="Plane107" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.959892, 0.671061, -2.27063e-08, 0, -4.235e-08, -0.749977, -0.921757, 0.698824, -2.36457e-08, 78.9015, -0.000134826, 45.5671 )
+
+[node name="Plane4" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.0258347, -0.968671, 3.27764e-08, 0, -4.235e-08, -0.749977, 1.33055, -0.0188083, 6.36408e-10, 42.0922, 0.0488764, -7.4357 )
+
+[node name="Plane23" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.27865, 0.268558, -9.08703e-09, 0, -4.235e-08, -0.749977, -0.368886, 0.930889, -3.14979e-08, -23.0249, 0.0488764, -47.0364 )
+
+[node name="Plane31" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.12252, 0.52041, -1.76088e-08, 0, -4.235e-08, -0.749977, -0.714826, -0.817222, 2.76518e-08, 30.8913, 0.0488764, 22.7034 )
+
+[node name="Plane43" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.0953158, -0.966366, 3.26983e-08, 0, -4.235e-08, -0.749977, 1.32738, -0.0693921, 2.34798e-09, 30.872, 0.0488764, -54.8852 )
+
+[node name="Plane55" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.0111506, 0.96882, -3.27814e-08, 0, -4.235e-08, -0.749977, -1.33075, -0.0081179, 2.74681e-10, -19.8795, 0.0488764, 41.2147 )
+
+[node name="Plane65" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.32472, -0.0924959, 3.12973e-09, 0, -4.235e-08, -0.749977, 0.12705, 0.964429, -3.26328e-08, -45.7203, 0.0488764, -78.5471 )
+
+[node name="Plane83" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.960252, 0.670786, -2.2697e-08, 0, -4.235e-08, -0.749977, -0.921378, 0.699088, -2.36546e-08, 82.336, 0.0488764, -75.5864 )
+
+[node name="Plane96" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.960252, 0.670786, -2.2697e-08, 0, -4.235e-08, -0.749977, -0.921378, 0.699088, -2.36546e-08, -52.9737, 0.0488764, -2.54897 )
+
+[node name="Plane5" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.33043, -0.0226934, 7.67864e-10, 0, -4.235e-08, -0.749977, 0.0311712, 0.968588, -3.27735e-08, 50.7853, 0.0491205, 2.1026 )
+
+[node name="Plane17" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.363755, 0.931959, -3.15341e-08, 0, -4.235e-08, -0.749977, -1.28012, -0.264822, 8.96062e-09, -16.4848, 0.0491205, -58.162 )
+
+[node name="Plane25" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.719322, -0.815128, 2.7581e-08, 0, -4.235e-08, -0.749977, 1.11964, -0.523683, 1.77196e-08, 18.2217, 0.0491205, 25.159 )
+
+[node name="Plane37" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.32699, -0.0732675, 2.47911e-09, 0, -4.235e-08, -0.749977, 0.100639, 0.96608, -3.26887e-08, 39.055, 0.0491205, -44.9057 )
+
+[node name="Plane49" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.33079, -0.00423209, 1.43194e-10, 0, -4.235e-08, -0.749977, 0.00581308, -0.968845, 3.27822e-08, -28.8344, 0.0491205, 31.9216 )
+
+[node name="Plane63" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.132363, 0.96405, -3.262e-08, 0, -4.235e-08, -0.749977, -1.3242, 0.0963633, -3.26059e-09, -35.548, 0.0491205, -86.4889 )
+
+[node name="Plane81" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.917523, 0.701773, -2.37454e-08, 0, -4.235e-08, -0.749977, -0.963944, -0.667977, 2.26019e-08, 82.9496, 0.0491205, -88.4772 )
+
+[node name="Plane95" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.917523, 0.701773, -2.37454e-08, 0, -4.235e-08, -0.749977, -0.963944, -0.667977, 2.26019e-08, -52.3601, 0.0491205, -15.4398 )
+
+[node name="Plane106" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.38474, -0.927482, 3.13826e-08, 0, -4.235e-08, -0.749977, 1.27398, 0.280099, -9.47755e-09, -76.7816, 0.0491205, 32.5386 )
+
+[node name="Plane6" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.0145358, 0.968796, -3.27806e-08, 0, -4.235e-08, -0.749977, -1.33072, 0.0105824, -3.58072e-10, 60.2588, 0.0491205, -6.54133 )
+
+[node name="Plane15" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.27547, -0.276453, 9.35416e-09, 0, -4.235e-08, -0.749977, 0.37973, -0.928575, 3.14196e-08, -27.5441, 0.0491205, -64.6547 )
+
+[node name="Plane35" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.12855, -0.513452, 1.73734e-08, 0, -4.235e-08, -0.749977, 0.705268, 0.821611, -2.78004e-08, 20.669, 0.0491205, 37.7477 )
+
+[node name="Plane47" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.0840412, 0.96692, -3.27171e-08, 0, -4.235e-08, -0.749977, -1.32814, 0.061184, -2.07025e-09, 48.9671, 0.0491205, -53.0429 )
+
+[node name="Plane59" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.02245, -0.968716, 3.27779e-08, 0, -4.235e-08, -0.749977, 1.33061, 0.0163441, -5.53025e-10, -38.064, 0.0491205, 40.8255 )
+
+[node name="Plane84" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.952395, -0.676698, 2.28971e-08, 0, -4.235e-08, -0.749977, 0.9295, -0.693367, 2.34611e-08, 70.1395, 0.0491205, -89.0798 )
+
+[node name="Plane91" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.952395, -0.676698, 2.28971e-08, 0, -4.235e-08, -0.749977, 0.9295, -0.693367, 2.34611e-08, -65.1703, 0.0491205, -16.0423 )
+
+[node name="Plane7" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.0145358, 0.968796, -3.27806e-08, 0, -4.235e-08, -0.749977, -1.33072, 0.0105824, -3.58072e-10, 60.2588, 0.0491205, -24.8635 )
+
+[node name="Plane18" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.27547, -0.276453, 9.35416e-09, 0, -4.235e-08, -0.749977, 0.37973, -0.928575, 3.14196e-08, -45.0464, 0.0491205, -59.2352 )
+
+[node name="Plane26" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.12855, -0.513452, 1.73734e-08, 0, -4.235e-08, -0.749977, 0.705268, 0.821611, -2.78004e-08, 36.3118, 0.0491205, 47.2874 )
+
+[node name="Plane38" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.0840412, 0.96692, -3.27171e-08, 0, -4.235e-08, -0.749977, -1.32814, 0.061184, -2.07025e-09, 49.9244, 0.0491205, -71.34 )
+
+[node name="Plane50" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.02245, -0.968716, 3.27779e-08, 0, -4.235e-08, -0.749977, 1.33061, 0.0163441, -5.53025e-10, -37.5549, 0.0491205, 59.1406 )
+
+[node name="Plane67" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.32575, 0.0843033, -2.85252e-09, 0, -4.235e-08, -0.749977, -0.115797, -0.965179, 3.26582e-08, 71.2387, 0.0491205, 33.1471 )
+
+[node name="Plane78" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.952395, -0.676698, 2.28971e-08, 0, -4.235e-08, -0.749977, 0.9295, -0.693367, 2.34611e-08, 57.1675, 0.0491205, -76.1401 )
+
+[node name="Plane90" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.952395, -0.676698, 2.28971e-08, 0, -4.235e-08, -0.749977, 0.9295, -0.693367, 2.34611e-08, -78.1422, 0.0491205, -3.10267 )
+
+[node name="Plane105" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.14241, 0.963291, -3.25943e-08, 0, -4.235e-08, -0.749977, -1.32316, -0.103678, 3.5081e-09, 37.5317, 0.0491205, 89.8791 )
+
+[node name="Plane8" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.33076, -0.00749927, 2.53746e-10, 0, -4.235e-08, -0.749977, 0.0103009, -0.968825, 3.27816e-08, 51.4567, 0.0491205, -34.34 )
+
+[node name="Plane14" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.403467, -0.923254, 3.12396e-08, 0, -4.235e-08, -0.749977, 1.26817, 0.293734, -9.93889e-09, -51.4952, 0.0491205, -48.0239 )
+
+[node name="Plane33" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.684084, 0.83105, -2.81198e-08, 0, -4.235e-08, -0.749977, -1.14152, 0.498029, -1.68515e-08, 48.9854, 0.0491205, 44.7065 )
+
+[node name="Plane45" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.32948, 0.0431285, -1.45932e-09, 0, -4.235e-08, -0.749977, -0.0592405, -0.967893, 3.275e-08, 41.6294, 0.0491205, -81.2634 )
+
+[node name="Plane58" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.32996, 0.0344196, -1.16463e-09, 0, -4.235e-08, -0.749977, -0.0472781, 0.968242, -3.27618e-08, -28.4928, 0.0491205, 68.3688 )
+
+[node name="Plane68" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.0910359, -0.966584, 3.27057e-08, 0, -4.235e-08, -0.749977, 1.32768, -0.0662763, 2.24255e-09, 61.1198, 0.0491205, 41.2023 )
+
+[node name="Plane74" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.947112, -0.680617, 2.30296e-08, 0, -4.235e-08, -0.749977, 0.934883, 0.68952, -2.33309e-08, 56.6747, 0.0491205, -63.2158 )
+
+[node name="Plane89" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.947112, -0.680617, 2.30296e-08, 0, -4.235e-08, -0.749977, 0.934883, 0.68952, -2.33309e-08, -78.635, 0.0491205, 9.8216 )
+
+[node name="Plane99" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.32027, -0.121637, 4.11575e-09, 0, -4.235e-08, -0.749977, 0.167078, -0.961188, 3.25231e-08, 27.674, 0.0491205, 81.5063 )
+
+[node name="Plane9" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.33076, -0.00749927, 2.53746e-10, 0, -4.235e-08, -0.749977, 0.0103009, -0.968825, 3.27816e-08, 33.1448, 0.0491205, -34.0616 )
+
+[node name="Plane21" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.403467, -0.923254, 3.12396e-08, 0, -4.235e-08, -0.749977, 1.26817, 0.293734, -9.93889e-09, -45.8128, 0.0491205, -30.6138 )
+
+[node name="Plane29" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.684084, 0.83105, -2.81198e-08, 0, -4.235e-08, -0.749977, -1.14152, 0.498029, -1.68515e-08, 58.2821, 0.0491205, 28.9276 )
+
+[node name="Plane41" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.32948, 0.0431285, -1.45932e-09, 0, -4.235e-08, -0.749977, -0.0592405, -0.967893, 3.275e-08, 23.328, 0.0491205, -81.9422 )
+
+[node name="Plane53" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.32996, 0.0344196, -1.16463e-09, 0, -4.235e-08, -0.749977, -0.0472781, 0.968242, -3.27618e-08, -10.1958, 0.0491205, 67.5816 )
+
+[node name="Plane69" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.0910359, -0.966584, 3.27057e-08, 0, -4.235e-08, -0.749977, 1.32768, -0.0662763, 2.24255e-09, 60.0033, 0.0491205, 59.4822 )
+
+[node name="Plane77" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.947112, -0.680617, 2.30296e-08, 0, -4.235e-08, -0.749977, 0.934883, 0.68952, -2.33309e-08, 69.8041, 0.0491205, -50.4479 )
+
+[node name="Plane86" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.947112, -0.680617, 2.30296e-08, 0, -4.235e-08, -0.749977, 0.934883, 0.68952, -2.33309e-08, -65.5056, 0.0491205, 22.5896 )
+
+[node name="Plane100" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.32027, -0.121637, 4.11575e-09, 0, -4.235e-08, -0.749977, 0.167078, -0.961188, 3.25231e-08, 9.5226, 0.0491205, 83.941 )
+
+[node name="Plane10" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.808254, 0.769695, -2.60437e-08, 0, -4.235e-08, -0.749977, -1.05724, -0.588428, 1.99103e-08, 18.3966, 0.0491205, -41.2798 )
+
+[node name="Plane16" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.770856, -0.789766, 2.67229e-08, 0, -4.235e-08, -0.749977, 1.08481, -0.561202, 1.8989e-08, -48.3456, 0.0491205, -14.3904 )
+
+[node name="Plane36" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.32346, 0.101625, -3.43862e-09, 0, -4.235e-08, -0.749977, -0.13959, 0.963509, -3.26017e-08, 72.1235, 0.0491205, 20.0944 )
+
+[node name="Plane48" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.751913, 0.799387, -2.70484e-08, 0, -4.235e-08, -0.749977, -1.09802, -0.54741, 1.85224e-08, 8.97704, 0.0491205, -89.921 )
+
+[node name="Plane60" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.837322, -0.753046, 2.54804e-08, 0, -4.235e-08, -0.749977, 1.03437, 0.60959, -2.06263e-08, 4.74736, 0.0491205, 74.3872 )
+
+[node name="Plane70" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.1157, -0.528126, 1.78698e-08, 0, -4.235e-08, -0.749977, 0.725424, -0.812257, 2.74839e-08, 51.6833, 0.0491205, 73.6381 )
+
+[node name="Plane73" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.177698, -0.960178, 3.2489e-08, 0, -4.235e-08, -0.749977, 1.31888, -0.129369, 4.37742e-09, 75.1094, 0.0491205, -34.9087 )
+
+[node name="Plane87" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.177698, -0.960178, 3.2489e-08, 0, -4.235e-08, -0.749977, 1.31888, -0.129369, 4.37742e-09, -60.2003, 0.0491205, 38.1287 )
+
+[node name="Plane101" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.927231, 0.694976, -2.35155e-08, 0, -4.235e-08, -0.749977, -0.954606, -0.675046, 2.28411e-08, -5.97361, 0.0491205, 78.5115 )
+
+[node name="Plane11" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.905875, -0.709746, 2.40153e-08, 0, -4.235e-08, -0.749977, 0.974895, -0.659498, 2.23151e-08, 6.64218, 0.0491205, -42.4831 )
+
+[node name="Plane19" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.19922, -0.420051, 1.4213e-08, 0, -4.235e-08, -0.749977, 0.576974, 0.873061, -2.95412e-08, -46.0182, 0.0491205, -2.80603 )
+
+[node name="Plane27" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.360671, 0.932594, -3.15556e-08, 0, -4.235e-08, -0.749977, -1.28099, -0.262577, 8.88468e-09, 79.271, 0.0491205, 10.6854 )
+
+[node name="Plane39" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.955572, -0.674321, 2.28166e-08, 0, -4.235e-08, -0.749977, 0.926234, -0.695679, 2.35393e-08, -2.69849, 0.0491205, -91.7368 )
+
+[node name="Plane51" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.878433, 0.727799, -2.46261e-08, 0, -4.235e-08, -0.749977, -0.999692, 0.63952, -2.16391e-08, 16.5307, 0.0491205, 75.2634 )
+
+[node name="Plane76" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.32996, 0.0343274, -1.16149e-09, 0, -4.235e-08, -0.749977, -0.047152, 0.968245, -3.2762e-08, 82.5588, 0.0491205, -25.7369 )
+
+[node name="Plane92" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.32996, 0.0343274, -1.16149e-09, 0, -4.235e-08, -0.749977, -0.047152, 0.968245, -3.2762e-08, -52.751, 0.0491205, 47.3005 )
+
+[node name="Plane103" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.784655, -0.78253, 2.6478e-08, 0, -4.235e-08, -0.749977, 1.07487, -0.571247, 1.9329e-08, -17.7879, 0.0491205, 78.702 )
+
+[node name="Plane12" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.33018, -0.0294625, 9.96902e-10, 0, -4.235e-08, -0.749977, 0.0404691, -0.968406, 3.27674e-08, -8.87911, 0.0491205, -35.3048 )
+
+[node name="Plane20" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.432115, -0.916357, 3.10062e-08, 0, -4.235e-08, -0.749977, 1.25869, 0.31459, -1.06446e-08, -34.57, 0.0491205, 9.89744 )
+
+[node name="Plane28" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.658028, 0.842128, -2.84946e-08, 0, -4.235e-08, -0.749977, -1.15673, 0.47906, -1.62097e-08, 81.2238, 0.0491205, -6.30358 )
+
+[node name="Plane40" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.33048, 0.0211733, -7.16434e-10, 0, -4.235e-08, -0.749977, -0.0290834, -0.968623, 3.27747e-08, -18.5736, 0.0491205, -85.3792 )
+
+[node name="Plane52" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 1.32855, 0.0563627, -1.90711e-09, 0, -4.235e-08, -0.749977, -0.0774187, 0.967213, -3.2727e-08, 31.8465, 0.0491205, 67.6564 )
+
+[node name="Plane72" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -0.0609118, -0.967838, 3.27482e-08, 0, -4.235e-08, -0.749977, 1.32941, -0.0443449, 1.50047e-09, -77.3888, 0.0491205, -29.8449 )
+
+[node name="Plane75" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.968067, -0.664809, 2.24948e-08, 0, -4.235e-08, -0.749977, 0.913173, 0.704774, -2.3847e-08, 98.6025, 0.0491205, -19.8176 )
+
+[node name="Plane88" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( 0.968067, -0.664809, 2.24948e-08, 0, -4.235e-08, -0.749977, 0.913173, 0.704774, -2.3847e-08, -36.7073, 0.0491205, 53.2198 )
+
+[node name="Plane98" parent="Spatial" instance=ExtResource( 4 )]
+transform = Transform( -1.31615, -0.143398, 4.85207e-09, 0, -4.235e-08, -0.749977, 0.196969, -0.958183, 3.24215e-08, -32.3549, 0.0491205, 87.6597 )
+
+[node name="MeshInstance2" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.999172, 0, -0.040694, 0, 1, 0, 0.040694, 0, 0.999172, -6.59954, -3.37744, -29.7477 )
+
+[node name="MeshInstance25" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.256673, 0, 0.966499, 0, 1, 0, -0.966499, 0, -0.256673, -29.9359, -3.37744, 6.07613 )
+
+[node name="MeshInstance33" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.554976, 0, -0.831867, 0, 1, 0, 0.831867, 0, -0.554976, 75.2924, -3.37744, -7.25076 )
+
+[node name="MeshInstance46" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.995681, 0, -0.0928415, 0, 1, 0, 0.0928415, 0, 0.995681, -16.5875, -3.37744, -79.7106 )
+
+[node name="MeshInstance59" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.999917, 0, 0.0129117, 0, 1, 0, -0.0129117, 0, -0.999917, 29.4134, -3.37744, 62.1648 )
+
+[node name="MeshInstance68" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.11664, 0, 0.993175, 0, 1, 0, -0.993175, 0, 0.11664, -71.6743, -3.37744, -31.6953 )
+
+[node name="MeshInstance91" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.676832, 0, 0.736138, 0, 1, 0, -0.736138, 0, -0.676832, 100.927, -3.37744, -25.3561 )
+
+[node name="MeshInstance99" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.676832, 0, 0.736138, 0, 1, 0, -0.736138, 0, -0.676832, -34.3828, -3.37744, 47.6813 )
+
+[node name="MeshInstance113" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.997004, 0, 0.0773566, 0, 1, 0, -0.0773566, 0, 0.997004, -29.4363, -3.37744, 92.9094 )
+
+[node name="MeshInstance3" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.652323, 0, -0.757941, 0, 1, 0, 0.757941, 0, 0.652323, 11.5447, -3.37769, -29.4726 )
+
+[node name="MeshInstance17" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.531074, 0, 0.847326, 0, 1, 0, -0.847326, 0, 0.531074, -35.04, -3.37769, -11.3375 )
+
+[node name="MeshInstance36" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.986742, 0, -0.162296, 0, 1, 0, 0.162296, 0, -0.986742, 65.6105, -3.37769, 8.09684 )
+
+[node name="MeshInstance49" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.611833, 0, -0.790988, 0, 1, 0, 0.790988, 0, 0.611833, 1.51754, -3.37769, -78.4879 )
+
+[node name="MeshInstance62" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.673134, 0, 0.739521, 0, 1, 0, -0.739521, 0, -0.673134, 11.2686, -3.37769, 62.3941 )
+
+[node name="MeshInstance69" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.805402, 0, 0.59273, 0, 1, 0, -0.59273, 0, 0.805402, -70.0187, -3.37769, -49.7658 )
+
+[node name="MeshInstance80" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.0759225, 0, 0.997114, 0, 1, 0, -0.997114, 0, 0.0759225, 88.3078, -3.37769, -38.3962 )
+
+[node name="MeshInstance95" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.0759225, 0, 0.997114, 0, 1, 0, -0.997114, 0, 0.0759225, -47.0019, -3.37769, 34.6412 )
+
+[node name="MeshInstance117" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.737111, 0, -0.675773, 0, 1, 0, 0.675773, 0, 0.737111, -11.3862, -3.37769, 91.044 )
+
+[node name="MeshInstance4" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.999353, 0, -0.0359844, 0, 1, 0, 0.0359844, 0, 0.999353, 24.2693, -3.37769, -16.3442 )
+
+[node name="MeshInstance27" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.261226, 0, 0.965278, 0, 1, 0, -0.965278, 0, -0.261226, -26.263, -3.37769, -27.376 )
+
+[node name="MeshInstance35" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.551049, 0, -0.834473, 0, 1, 0, 0.834473, 0, -0.551049, 47.7768, -3.37769, 12.1252 )
+
+[node name="MeshInstance48" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.996108, 0, -0.0881478, 0, 1, 0, 0.0881478, 0, 0.996108, 13.5389, -3.37769, -64.7127 )
+
+[node name="MeshInstance61" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.999967, 0, 0.00819892, 0, 1, 0, -0.00819892, 0, -0.999967, -1.81598, -3.37769, 49.6245 )
+
+[node name="MeshInstance70" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.111958, 0, 0.993714, 0, 1, 0, -0.993714, 0, 0.111958, -55.9598, -3.37769, -61.4541 )
+
+[node name="MeshInstance88" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.680294, 0, 0.73294, 0, 1, 0, -0.73294, 0, -0.680294, 88.616, -3.37769, -56.6766 )
+
+[node name="MeshInstance104" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.680294, 0, 0.73294, 0, 1, 0, -0.73294, 0, -0.680294, -46.6938, -3.37769, 16.3608 )
+
+[node name="MeshInstance106" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.748879, 0, 0.662709, 0, 1, 0, -0.662709, 0, 0.748879, 72.5824, -3.37769, 51.6993 )
+
+[node name="MeshInstance5" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.0600832, 0, -0.998194, 0, 1, 0, 0.998194, 0, -0.0600832, 42.2166, -3.32867, -16.2403 )
+
+[node name="MeshInstance26" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.971299, 0, 0.237862, 0, 1, 0, -0.237862, 0, 0.971299, -31.4724, -3.32867, -44.551 )
+
+[node name="MeshInstance34" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.820937, 0, 0.57102, 0, 1, 0, -0.57102, 0, -0.820937, 38.3436, -3.32867, 27.3938 )
+
+[node name="MeshInstance47" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.112153, 0, -0.993691, 0, 1, 0, 0.993691, 0, -0.112153, 31.4563, -3.32867, -63.6713 )
+
+[node name="MeshInstance60" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.0323206, 0, 0.999478, 0, 1, 0, -0.999478, 0, 0.0323206, -19.7593, -3.32867, 50.0194 )
+
+[node name="MeshInstance71" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.990723, 0, -0.135898, 0, 1, 0, 0.135898, 0, 0.990723, -54.49, -3.32867, -79.3415 )
+
+[node name="MeshInstance83" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.749138, 0, 0.662414, 0, 1, 0, -0.662414, 0, 0.749138, 76.0145, -3.32867, -69.4564 )
+
+[node name="MeshInstance94" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.749138, 0, 0.662414, 0, 1, 0, -0.662414, 0, 0.749138, -59.2952, -3.32867, 3.58097 )
+
+[node name="MeshInstance116" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.644449, 0, -0.764648, 0, 1, 0, 0.764648, 0, 0.644449, 85.6578, -3.32867, 39.4049 )
+
+[node name="MeshInstance6" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.997945, 0, -0.0640863, 0, 1, 0, 0.0640863, 0, 0.997945, 41.9813, -3.32843, 1.94285 )
+
+[node name="MeshInstance18" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.233965, 0, 0.972245, 0, 1, 0, -0.972245, 0, -0.233965, -14.0332, -3.32843, -49.7046 )
+
+[node name="MeshInstance39" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.574308, 0, -0.81864, 0, 1, 0, 0.81864, 0, -0.574308, 22.942, -3.32843, 17.7256 )
+
+[node name="MeshInstance52" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.993233, 0, -0.116138, 0, 1, 0, 0.116138, 0, 0.993233, 30.2713, -3.32843, -45.5252 )
+
+[node name="MeshInstance63" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.99934, 0, 0.0363291, 0, 1, 0, -0.0363291, 0, -0.99934, -20.0293, -3.32843, 31.8367 )
+
+[node name="MeshInstance72" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.139871, 0, 0.99017, 0, 1, 0, -0.99017, 0, 0.139871, -36.3775, -3.32843, -77.7226 )
+
+[node name="MeshInstance82" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.659404, 0, 0.751789, 0, 1, 0, -0.751789, 0, -0.659404, 89.0542, -3.32843, -82.1313 )
+
+[node name="MeshInstance93" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.659404, 0, 0.751789, 0, 1, 0, -0.751789, 0, -0.659404, -46.2555, -3.32843, -9.09385 )
+
+[node name="MeshInstance110" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.249908, 0, -0.96827, 0, 1, 0, 0.96827, 0, 0.249908, -79.3717, -3.32843, 24.1227 )
+
+[node name="MeshInstance7" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.0516051, 0, 0.998668, 0, 1, 0, -0.998668, 0, 0.0516051, 60.2092, -3.32843, 2.26405 )
+
+[node name="MeshInstance22" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.969244, 0, -0.246101, 0, 1, 0, 0.246101, 0, -0.969244, -19.1181, -3.32843, -67.2119 )
+
+[node name="MeshInstance28" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.825756, 0, -0.564029, 0, 1, 0, 0.564029, 0, 0.825756, 13.1772, -3.32843, 33.1206 )
+
+[node name="MeshInstance41" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.103711, 0, 0.994608, 0, 1, 0, -0.994608, 0, 0.103711, 48.4575, -3.32843, -44.2521 )
+
+[node name="MeshInstance54" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.0238326, 0, -0.999716, 0, 1, 0, 0.999716, 0, -0.0238326, -38.2591, -3.32843, 32.0222 )
+
+[node name="MeshInstance73" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.991841, 0, 0.127481, 0, 1, 0, -0.127481, 0, -0.991841, -34.6696, -3.32843, -95.8732 )
+
+[node name="MeshInstance85" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.743486, 0, -0.668751, 0, 1, 0, 0.668751, 0, -0.743486, 76.4085, -3.32843, -95.2632 )
+
+[node name="MeshInstance98" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.743486, 0, -0.668751, 0, 1, 0, 0.668751, 0, -0.743486, -58.9012, -3.32843, -22.2258 )
+
+[node name="MeshInstance115" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.96507, 0, 0.261994, 0, 1, 0, -0.261994, 0, 0.96507, -74.0004, -3.32843, 41.5441 )
+
+[node name="MeshInstance8" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.0516051, 0, 0.998668, 0, 1, 0, -0.998668, 0, 0.0516051, 60.2092, -3.32843, -16.0582 )
+
+[node name="MeshInstance23" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.969244, 0, -0.246101, 0, 1, 0, 0.246101, 0, -0.969244, -36.6204, -3.32843, -61.7923 )
+
+[node name="MeshInstance31" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.825756, 0, -0.564029, 0, 1, 0, 0.564029, 0, 0.825756, 28.82, -3.32843, 42.6604 )
+
+[node name="MeshInstance43" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.103711, 0, 0.994608, 0, 1, 0, -0.994608, 0, 0.103711, 49.4147, -3.32843, -62.5493 )
+
+[node name="MeshInstance56" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.0238326, 0, -0.999716, 0, 1, 0, 0.999716, 0, -0.0238326, -37.7499, -3.32843, 50.3372 )
+
+[node name="MeshInstance74" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.991841, 0, 0.127481, 0, 1, 0, -0.127481, 0, -0.991841, 80.0148, -3.32843, 33.867 )
+
+[node name="MeshInstance84" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.743486, 0, -0.668751, 0, 1, 0, 0.668751, 0, -0.743486, 63.4367, -3.32843, -82.3235 )
+
+[node name="MeshInstance96" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.743486, 0, -0.668751, 0, 1, 0, 0.668751, 0, -0.743486, -71.873, -3.32843, -9.28611 )
+
+[node name="MeshInstance111" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.0664621, 0, 0.997789, 0, 1, 0, -0.997789, 0, -0.0664621, 38.5202, -3.32843, 98.629 )
+
+[node name="MeshInstance9" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.999457, 0, 0.0329588, 0, 1, 0, -0.0329588, 0, -0.999457, 60.2615, -3.32843, -34.4546 )
+
+[node name="MeshInstance21" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.264147, 0, -0.964483, 0, 1, 0, 0.964483, 0, 0.264147, -54.2091, -3.32843, -56.4008 )
+
+[node name="MeshInstance30" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.54852, 0, 0.836138, 0, 1, 0, -0.836138, 0, 0.54852, 44.4989, -3.32843, 52.2834 )
+
+[node name="MeshInstance44" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.99637, 0, 0.0851317, 0, 1, 0, -0.0851317, 0, -0.99637, 50.4281, -3.32843, -80.9179 )
+
+[node name="MeshInstance57" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.999987, 0, -0.00517159, 0, 1, 0, 0.00517159, 0, 0.999987, -37.291, -3.32843, 68.7281 )
+
+[node name="MeshInstance75" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.108949, 0, -0.994048, 0, 1, 0, 0.994048, 0, -0.108949, 61.6757, -3.32843, 32.4143 )
+
+[node name="MeshInstance87" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.68251, 0, -0.730877, 0, 1, 0, 0.730877, 0, 0.68251, 50.3754, -3.32843, -69.3685 )
+
+[node name="MeshInstance105" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.68251, 0, -0.730877, 0, 1, 0, 0.730877, 0, 0.68251, -84.9344, -3.32843, 3.66891 )
+
+[node name="MeshInstance118" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.996375, 0, -0.0850714, 0, 1, 0, 0.0850714, 0, -0.996375, 36.4039, -3.32843, 80.3547 )
+
+[node name="MeshInstance10" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.999457, 0, 0.0329588, 0, 1, 0, -0.0329588, 0, -0.999457, 41.9496, -3.32843, -34.1763 )
+
+[node name="MeshInstance24" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.264147, 0, -0.964483, 0, 1, 0, 0.964483, 0, 0.264147, -48.5267, -3.32843, -38.9906 )
+
+[node name="MeshInstance32" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.54852, 0, 0.836138, 0, 1, 0, -0.836138, 0, 0.54852, 53.7956, -3.32843, 36.5045 )
+
+[node name="MeshInstance45" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.99637, 0, 0.0851317, 0, 1, 0, -0.0851317, 0, -0.99637, 32.1267, -3.32843, -81.5966 )
+
+[node name="MeshInstance58" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.999987, 0, -0.00517159, 0, 1, 0, 0.00517159, 0, 0.999987, -18.9939, -3.32843, 67.9409 )
+
+[node name="MeshInstance76" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.108949, 0, -0.994048, 0, 1, 0, 0.994048, 0, -0.108949, 60.5592, -3.32843, 50.6943 )
+
+[node name="MeshInstance90" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.68251, 0, -0.730877, 0, 1, 0, 0.730877, 0, 0.68251, 63.5048, -3.32843, -56.6005 )
+
+[node name="MeshInstance100" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.68251, 0, -0.730877, 0, 1, 0, 0.730877, 0, 0.68251, -71.8049, -3.32843, 16.4369 )
+
+[node name="MeshInstance112" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.996375, 0, -0.0850714, 0, 1, 0, 0.0850714, 0, -0.996375, 18.2524, -3.32843, 82.7894 )
+
+[node name="MeshInstance11" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.574512, 0, 0.818496, 0, 1, 0, -0.818496, 0, -0.574512, 23.7815, -3.32843, -34.3127 )
+
+[node name="MeshInstance19" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.611935, 0, -0.790909, 0, 1, 0, 0.790909, 0, -0.611935, -43.2831, -3.32843, -21.5951 )
+
+[node name="MeshInstance40" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.997929, 0, 0.0643355, 0, 1, 0, -0.0643355, 0, 0.997929, 63.3716, -3.32843, 21.0642 )
+
+[node name="MeshInstance53" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.530964, 0, 0.847394, 0, 1, 0, -0.847394, 0, -0.530964, 13.9905, -3.32843, -82.6821 )
+
+[node name="MeshInstance64" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.597036, 0, -0.802215, 0, 1, 0, 0.802215, 0, 0.597036, -0.829059, -3.32843, 67.5723 )
+
+[node name="MeshInstance77" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.859857, 0, -0.510535, 0, 1, 0, 0.510535, 0, -0.859857, 59.0402, -3.32843, 68.7993 )
+
+[node name="MeshInstance86" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.173747, 0, -0.984791, 0, 1, 0, 0.984791, 0, -0.173747, 76.2391, -3.32843, -43.6415 )
+
+[node name="MeshInstance102" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.173747, 0, -0.984791, 0, 1, 0, 0.984791, 0, -0.173747, -59.0706, -3.32843, 29.3959 )
+
+[node name="MeshInstance109" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.666979, 0, 0.745077, 0, 1, 0, -0.745077, 0, -0.666979, 0.194916, -3.32843, 84.7953 )
+
+[node name="MeshInstance12" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.709947, 0, -0.704256, 0, 1, 0, 0.704256, 0, -0.709947, 12.6019, -3.32843, -48.9653 )
+
+[node name="MeshInstance20" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.882738, 0, -0.469866, 0, 1, 0, 0.469866, 0, 0.882738, -53.9732, -3.32843, -6.58172 )
+
+[node name="MeshInstance29" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.231623, 0, 0.972806, 0, 1, 0, -0.972806, 0, -0.231623, 81.7022, -3.32843, 19.1487 )
+
+[node name="MeshInstance42" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.745772, 0, -0.666202, 0, 1, 0, 0.666202, 0, -0.745772, 3.5918, -3.32843, -97.8988 )
+
+[node name="MeshInstance55" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.690102, 0, 0.723713, 0, 1, 0, -0.723713, 0, 0.690102, 10.7534, -3.32843, 81.9087 )
+
+[node name="MeshInstance78" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.648166, 0, -0.7615, 0, 1, 0, 0.7615, 0, 0.648166, 43.579, -3.32843, 78.8309 )
+
+[node name="MeshInstance81" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.999987, 0, -0.0052669, 0, 1, 0, 0.0052669, 0, 0.999987, 73.7605, -3.32843, -25.3784 )
+
+[node name="MeshInstance97" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.999987, 0, -0.0052669, 0, 1, 0, 0.0052669, 0, 0.999987, -61.5492, -3.32843, 47.659 )
+
+[node name="MeshInstance114" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.621992, 0, -0.783025, 0, 1, 0, 0.783025, 0, -0.621992, -12.6337, -3.32843, 71.5625 )
+
+[node name="MeshInstance13" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.999947, 0, 0.0102907, 0, 1, 0, -0.0102907, 0, -0.999947, -0.0792065, -3.32843, -35.619 )
+
+[node name="MeshInstance16" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.285945, 0, -0.958246, 0, 1, 0, 0.958246, 0, 0.285945, -37.4732, -3.32843, 1.58426 )
+
+[node name="MeshInstance38" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.529422, 0, 0.848359, 0, 1, 0, -0.848359, 0, 0.529422, 76.9103, -3.32843, 1.37307 )
+
+[node name="MeshInstance51" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.998044, 0, 0.0625202, 0, 1, 0, -0.0625202, 0, -0.998044, -9.76932, -3.32843, -85.2333 )
+
+[node name="MeshInstance66" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.999847, 0, 0.0175014, 0, 1, 0, -0.0175014, 0, 0.999847, 23.0588, -3.32843, 68.2151 )
+
+[node name="MeshInstance79" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.0863839, 0, -0.996262, 0, 1, 0, 0.996262, 0, -0.0863839, -77.0322, -3.32843, -38.6436 )
+
+[node name="MeshInstance89" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.698905, 0, -0.715215, 0, 1, 0, 0.715215, 0, 0.698905, 92.1653, -3.32843, -25.8258 )
+
+[node name="MeshInstance101" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.698905, 0, -0.715215, 0, 1, 0, 0.715215, 0, 0.698905, -43.1444, -3.32843, 47.2116 )
+
+[node name="MeshInstance107" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.99419, 0, -0.107639, 0, 1, 0, 0.107639, 0, -0.99419, -23.6535, -3.32843, 86.3104 )
+
+[node name="MeshInstance14" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.999947, 0, 0.0102907, 0, 1, 0, -0.0102907, 0, -0.999947, -18.42, -3.32843, -35.0716 )
+
+[node name="MeshInstance15" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.285945, 0, -0.958246, 0, 1, 0, 0.958246, 0, 0.285945, -31.5252, -3.32843, 18.9424 )
+
+[node name="MeshInstance37" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.529422, 0, 0.848359, 0, 1, 0, -0.848359, 0, 0.529422, 85.9923, -3.32843, -14.5707 )
+
+[node name="MeshInstance50" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.998044, 0, 0.0625202, 0, 1, 0, -0.0625202, 0, -0.998044, -28.1137, -3.32843, -85.6448 )
+
+[node name="MeshInstance65" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.999847, 0, 0.0175014, 0, 1, 0, -0.0175014, 0, 0.999847, 41.3773, -3.32843, 67.1582 )
+
+[node name="MeshInstance67" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.0863839, 0, -0.996262, 0, 1, 0, 0.996262, 0, -0.0863839, -77.8826, -3.32843, -20.3139 )
+
+[node name="MeshInstance92" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.698905, 0, -0.715215, 0, 1, 0, 0.715215, 0, 0.698905, 105.506, -3.32843, -13.2275 )
+
+[node name="MeshInstance103" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( 0.698905, 0, -0.715215, 0, 1, 0, 0.715215, 0, 0.698905, -29.8041, -3.32843, 59.81 )
+
+[node name="MeshInstance108" parent="Spatial" instance=ExtResource( 5 )]
+transform = Transform( -0.99419, 0, -0.107639, 0, 1, 0, 0.107639, 0, -0.99419, -41.8019, -3.32843, 89.0158 )
+
+[node name="DirectionalLight" type="OmniLight" parent="."]
+transform = Transform( -0.0755942, 0.903393, -0.422098, 0.159256, 0.428814, 0.889245, 0.984339, -7.56912e-09, -0.176287, -11.1646, 32.3385, -4.92283 )
+omni_range = 264.608
+omni_attenuation = 0.241484
+
+[node name="shadow" type="Spatial" parent="."]
+editor/display_folded = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.223435, 0 )
+
+[node name="MeshInstance" type="MeshInstance" parent="shadow"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.910099, 21.656, -4.18332, 2.63289 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.702269, 0, 0.64791, 0, 1, 0, -0.711911, 0, 0.639135, 15.2873, -4.18332, -12.0495 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.014014, 0, 0.91001, 0, 1, 0, -0.999902, 0, -0.0127541, 0.220316, -4.18332, -18.1454 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance4" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.721902, 0, 0.629785, 0, 1, 0, -0.691996, 0, -0.657002, -14.6414, -4.18357, -11.5225 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance5" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.721902, 0, 0.629785, 0, 1, 0, -0.691996, 0, -0.657002, -14.6414, -4.18357, -11.5225 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance6" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.999953, 0, -0.00887211, 0, 1, 0, 0.00974846, 0, -0.910056, -20.5466, -4.18357, 3.74741 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance7" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.706645, 0, -0.643957, 0, 1, 0, 0.707568, 0, -0.643117, -14.1642, -4.18357, 18.1823 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance8" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.0036974, 0, -0.910093, 0, 1, 0, 0.999993, 0, -0.00336495, 1.21157, -4.18357, 24.3743 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance9" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.71837, 0, -0.633121, 0, 1, 0, 0.695662, 0, 0.653788, 15.7525, -4.18357, 17.904 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance10" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.821651, 0, -0.559485, 0, 1, 0, 0.569991, 0, 0.806506, 17.9449, -4.1843, 25.3314 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance11" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.513593, 0, -0.842218, 0, 1, 0, 0.858034, 0, -0.504127, 20.9976, -4.18454, 38.2649 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance12" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.513593, 0, -0.842218, 0, 1, 0, 0.858034, 0, -0.504127, 30.7735, -4.18479, 22.9421 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance13" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.865222, 0, 0.492147, 0, 1, 0, -0.501388, 0, -0.849274, 42.8821, -4.18454, 19.9477 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance14" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.184514, 0, 0.964714, 0, 1, 0, -0.98283, 0, -0.181113, 56.3185, -4.18406, 10.0747 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance15" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.0186421, 0, 0.981397, 0, 1, 0, -0.999826, 0, 0.0182985, 51.4163, -4.1843, 2.09581 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance16" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.999568, 0, -0.0288386, 0, 1, 0, 0.0293802, 0, 0.981144, 41.9302, -4.18503, -6.98951 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance17" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.0212535, 0, -0.981346, 0, 1, 0, 0.999774, 0, 0.0208617, 33.1007, -4.18528, -16.0951 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance18" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.718811, 0, -0.682391, 0, 1, 0, 0.695206, 0, -0.705562, 17.6841, -4.18503, -23.09 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance19" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.00305243, 0, -0.981563, 0, 1, 0, 0.999995, 0, 0.00299616, 2.18027, -4.1843, -29.4613 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance20" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.0236986, 0, -0.981292, 0, 1, 0, 0.999719, 0, 0.0232618, -8.84988, -4.1843, -34.9032 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance21" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.880377, 0, -0.465532, 0, 1, 0, 0.474274, 0, 0.86415, -30.1499, -4.18454, -19.1679 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance22" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.961501, 0, 0.269736, 0, 1, 0, -0.274801, 0, 0.943778, -32.2334, -4.18479, -2.81813 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance23" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.947883, 0, 0.312745, 0, 1, 0, -0.318618, 0, 0.930412, -34.227, -4.18479, 10.3284 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance24" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.999953, 0, -0.00954908, 0, 1, 0, 0.0097284, 0, 0.981521, -19.4873, -4.18503, 40.8214 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance25" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.0025392, 0, -0.981565, 0, 1, 0, 0.999997, 0, -0.0024924, -29.1458, -4.18479, 31.6853 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance26" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.0418575, 0, -0.980707, 0, 1, 0, 0.999124, 0, 0.041086, -10.738, -4.18503, 49.6052 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance27" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.705102, 0, -0.696035, 0, 1, 0, 0.709106, 0, -0.692105, 4.65204, -4.18503, 56.1286 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance28" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.447706, 0, -0.877699, 0, 1, 0, 0.894181, 0, -0.439454, -45.7012, -4.18503, -2.7081 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance29" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.94938, 0, -0.30834, 0, 1, 0, 0.31413, 0, -0.931881, -28.8127, -4.18503, -35.7079 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance30" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.279485, 0, 0.942452, 0, 1, 0, -0.96015, 0, -0.274333, -22.6887, -4.18503, -47.2224 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance31" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.962407, 0, 0.266605, 0, 1, 0, -0.271612, 0, 0.944668, -16.1706, -4.18503, -58.452 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance32" type="MeshInstance" parent="shadow"]
+transform = Transform( 0.72851, 0, -0.672409, 0, 1, 0, 0.685035, 0, 0.715082, 6.37098, -4.18503, -42.3499 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance33" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.7812, 0, -0.612774, 0, 1, 0, 0.624281, 0, -0.766801, 18.4513, -4.18503, -41.6081 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="MeshInstance34" type="MeshInstance" parent="shadow"]
+transform = Transform( -0.0106446, 0, -0.981512, 0, 1, 0, 0.999943, 0, -0.0104484, 32.6539, -4.18503, -34.1936 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 7 )
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_finished"]
+
+[editable path="scene_blind_1"]
+
+[editable path="scene_blind_1/way/bus/blind"]

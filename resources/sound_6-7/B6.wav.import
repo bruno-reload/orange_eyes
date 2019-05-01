@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/B6.wav-81ce158023fb171a30ae5d5226d1990e.sample"
+
+[deps]
+
+source_file="res://resources/sound_6-7/B6.wav"
+dest_files=[ "res://.import/B6.wav-81ce158023fb171a30ae5d5226d1990e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=true
+compress/mode=0
