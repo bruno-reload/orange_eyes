@@ -153,9 +153,6 @@ transform = Transform( 0.95758, -3.1624e-06, 0.2881, 4.97435e-06, 1, -5.55813e-0
 [node name="armature" parent="scene_blind_1/way/bus/blind" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
-[node name="Skeleton" parent="scene_blind_1/way/bus/blind/armature" index="0"]
-bones/9/bound_children = [ NodePath("BoneAttachment") ]
-
 [node name="Cube000" parent="scene_blind_1/way/bus/blind/armature/Skeleton" index="0"]
 transform = Transform( 1, 0, 0, 2.27374e-13, 1, -1.7053e-13, 0, -2.27374e-13, 1, 0, 0, 0 )
 

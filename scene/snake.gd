@@ -73,7 +73,7 @@ func _on_timeout():
 func _punished():
 	if points.size():
 		remove_point(0)
-	if points.size() >= 0:
+	if points.size() <= 0:
 		scene_load.goto_scene("res://scene/ui.tscn")
 
 

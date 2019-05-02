@@ -31,11 +31,18 @@ var loader
 var time_max = 100 # msec
 var current_scene
 var sound = AudioStreamPlayer.new()
+var victory = AudioStreamPlayer.new()
+var buff = null
 
 func _ready():
+	victory.set_stream(load("res://import/victory.wav"))
+	victory.set_volume_db(-15)
+	
 	sound.set_stream(load("res://resources/open/orange.wav"))
 	sound.set_volume_db(-25)
+	
 	get_node("/root").call_deferred("add_child",sound)
+	
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() -1)
 	goto_scene("res://scene/ui.tscn")
@@ -49,7 +56,9 @@ func goto_scene(path): # game requests to switch to this scene
 	current_scene.queue_free() 
 	
 	set_process(true)
-
+func test():
+	print(buff)
+	
 func _process(time):
 	if loader == null:
 		set_process(false)
@@ -63,6 +72,7 @@ func _process(time):
 		if err == ERR_FILE_EOF: 
 			var resource = loader.get_resource()
 			loader = null
+			buff = resource
 			set_new_scene(resource)
 			break
 		if err != OK and err != ERR_FILE_EOF: 
@@ -77,5 +87,16 @@ func set_new_scene(scene_resource):
 	if str(scene_resource._get_bundled_scene().values()[0][0]) != "game":
 		if not sound.is_playing():
 			sound._set_playing(true)
+	if str(scene_resource._get_bundled_scene().values()[0][0]) == "blind_balloons":
+		victory()
 	current_scene = scene_resource.instance()
 	get_node("/root").add_child(current_scene)
+
+func victory():
+	get_node("/root").call_deferred("add_child",victory)
+	victory.set_stream(load("res://import/victory.wav"))
+	victory._set_playing(true)
+	yield(victory,"finished")
+
+func finshed():
+	sound._set_playing(true)

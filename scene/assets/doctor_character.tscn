@@ -46,7 +46,7 @@ func set_eyes(value):
 func get_eyes():
 	eyes_shader.get_shader_param(\"close\")"
 
-[node name="doctor" index="0" instance=ExtResource( 1 )]
+[node name="doctor" instance=ExtResource( 1 )]
 script = SubResource( 1 )
 
 [node name="BezierCurve001" parent="Armature/Skeleton" index="0"]

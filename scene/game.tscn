@@ -269,6 +269,7 @@ grid = NodePath("../../../../../../game")
 autostart = true
 
 [node name="quad_mask" type="Control" parent="."]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -368,13 +369,13 @@ script = SubResource( 7 )
 anims/open_eyes = SubResource( 8 )
 script = SubResource( 9 )
 
-[connection signal="timeout" from="punishment" to="quad_mask/ViewportContainer/vp_quad/Node2D/sprite" method="_punished"]
 [connection signal="timeout" from="punishment" to="line_mask/ViewportContainer/vp_line/Node2D/Line2D" method="_punished"]
+[connection signal="timeout" from="punishment" to="quad_mask/ViewportContainer/vp_quad/Node2D/sprite" method="_punished"]
 [connection signal="timeout" from="line_mask/ViewportContainer/vp_line/Node2D/Line2D/updateSnake" to="line_mask/ViewportContainer/vp_line/Node2D/Line2D" method="_on_timeout"]
 [connection signal="draw_cell" from="targetSpawnerPosition" to="quad_mask/ViewportContainer/vp_quad/Node2D/sprite" method="_on_draw_cell"]
-[connection signal="clicked" from="targetSpawnerPosition/target" to="doctor_work/ViewportContainer" method="_on_target_clicked"]
-[connection signal="clicked" from="targetSpawnerPosition/target" to="line_mask/ViewportContainer/vp_line/Node2D/Line2D" method="_on_target_clicked"]
 [connection signal="clicked" from="targetSpawnerPosition/target" to="targetSpawnerPosition" method="_on_target_clicked"]
+[connection signal="clicked" from="targetSpawnerPosition/target" to="line_mask/ViewportContainer/vp_line/Node2D/Line2D" method="_on_target_clicked"]
+[connection signal="clicked" from="targetSpawnerPosition/target" to="doctor_work/ViewportContainer" method="_on_target_clicked"]
 [connection signal="animation_finished" from="AnimatedSprite" to="AnimationPlayer" method="_on_AnimatedSprite_animation_finished"]
 
 [editable path="doctor_work/ViewportContainer/Viewport/Spatial/doctor"]

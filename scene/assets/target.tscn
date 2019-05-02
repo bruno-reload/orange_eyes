@@ -58,8 +58,8 @@ func _input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.is_pressed():
 		emit_signal(\"clicked\",transform.origin)
 
-func _process(delta):
-	emit_signal(\"clicked\",transform.origin)
+#func _process(delta):
+#	emit_signal(\"clicked\",transform.origin)
 
 "
 

@@ -100,9 +100,6 @@ script = SubResource( 1 )
 
 [node name="doctor" parent="." instance=ExtResource( 1 )]
 
-[node name="Skeleton" parent="doctor/Armature" index="0"]
-bones/11/bound_children = [ NodePath("BoneAttachment") ]
-
 [node name="Circle002" parent="doctor/Armature/Skeleton" index="1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0798142 )
 
