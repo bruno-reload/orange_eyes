@@ -18,6 +18,8 @@ _global_script_class_icons={
 config/name="orange_eyes"
 run/main_scene="res://scene/main.tscn"
 boot_splash/image="res://import/orange.png"
+boot_splash/fullsize=false
+boot_splash/bg_color=Color( 0.00784314, 0.0980392, 0.00392157, 1 )
 config/icon="res://import/orange.png"
 
 [autoload]
@@ -26,8 +28,8 @@ scene_load="*res://scene_load.gd"
 
 [display]
 
-window/size/test_width=512
-window/size/test_height=300
+window/size/test_width=1024
+window/size/test_height=600
 window/stretch/mode="viewport"
 
 [importer_defaults]
@@ -74,5 +76,6 @@ texture={
 
 [rendering]
 
+quality/driver/driver_name="GLES2"
 quality/driver/fallback_to_gles2=true
 vram_compression/import_etc=true
